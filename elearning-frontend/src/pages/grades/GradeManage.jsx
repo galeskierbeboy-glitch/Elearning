@@ -86,7 +86,7 @@ export default function GradeManage() {
 
   return (
     <div>
-      <h2>Grade Management (Auto-Recorded)</h2>
+      <h2>Grade Management</h2>
       <table>
         <thead>
           <tr>

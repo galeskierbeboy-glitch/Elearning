@@ -94,7 +94,7 @@ export default function Courses() {
               <article key={course.id} className="course-card">
                 <div className="course-image">
                   <img 
-                    src={course.thumbnail_url || '/assets/png/default-course.png'}
+                    src={course.thumbnail_url || 'https://images.unsplash.com/photo-1519389950473-47ba0277781c'}
                     alt={course.title}
                     className="course-thumbnail"
                   />

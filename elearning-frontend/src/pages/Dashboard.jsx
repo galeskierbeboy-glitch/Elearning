@@ -120,8 +120,8 @@ export default function Dashboard() {
                   >
                     <div className="course-card-header">
                       <div className="course-image">
-                        <img 
-                          src={course.thumbnail_url || '/assets/png/default-course.png'} 
+                        <img
+                          src={course.thumbnail_url || "https://images.unsplash.com/photo-1519389950473-47ba0277781c"}
                           alt={course.title}
                           className="course-thumbnail"
                         />

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../contexts/AuthContext';
 import { userService, authService } from '../services/api';
+import './UserAccount.css';
 
 const UserAccount = () => {
   const { user, logout, refreshProfile, setUserState } = useAuth();
@@ -70,7 +71,7 @@ const UserAccount = () => {
   }, []);
 
   return (
-    <div className="flex">
+    <div className="user-account-container flex">
       <Navbar />
       <div className="main-content max-w-3xl mx-auto p-6">
         <h2 className="text-2xl font-semibold mb-4">My Account</h2>

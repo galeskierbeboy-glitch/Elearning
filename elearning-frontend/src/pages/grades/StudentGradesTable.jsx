@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import './Grades.css';
+import Navbar from '../../components/Navbar';
+
 
 export default function StudentGradesTable() {
   const { user } = useAuth();
@@ -36,6 +38,7 @@ export default function StudentGradesTable() {
 
   return (
     <div className="grades-table-wrapper">
+      <Navbar />
       <table className="grades-table">
         <thead>
           <tr>
