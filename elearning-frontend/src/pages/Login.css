@@ -1,0 +1,267 @@
+.login-page {
+  min-height: 100vh;
+  background-color: #F0F5F9;
+  display: flex;
+  overflow-x: hidden;
+}
+
+.login-content {
+  flex: 1;
+  padding: 2rem;
+  max-width: 50%;
+}
+
+.hero-section {
+  flex: 1;
+  background-color: #1E2022;
+  padding: 4rem 2rem;
+  color: #F0F5F9;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  animation: slideInRight 1s ease-out;
+}
+
+.hero-section h2 {
+  font-size: 2rem;
+  margin-bottom: 2rem;
+  color: #F0F5F9;
+}
+
+.hero-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+}
+
+.hero-feature {
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.hero-feature:hover {
+  transform: translateY(-5px);
+}
+
+.hero-feature h3 {
+  color: #C9D6DF;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.hero-feature p {
+  color: #F0F5F9;
+  opacity: 0.8;
+}
+
+.login-form-container {
+  background: white;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  margin-bottom: 2rem;
+  animation: fadeIn 1s ease-out;
+}
+
+.main-heading {
+  color: #1E2022;
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  animation: slideInLeft 1s ease-out;
+}
+
+.sub-heading {
+  color: #52616B;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  animation: slideInLeft 1.2s ease-out;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.feature-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transform: translateY(50px);
+  opacity: 0;
+  animation: fadeInUp 0.5s ease-out forwards;
+}
+
+.feature-card:nth-child(2) { animation-delay: 0.2s; }
+.feature-card:nth-child(3) { animation-delay: 0.4s; }
+.feature-card:nth-child(4) { animation-delay: 0.6s; }
+
+.feature-title {
+  color: #1E2022;
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.feature-text {
+  color: #52616B;
+  line-height: 1.6;
+}
+
+.testimonial {
+  background: #52616B;
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  margin: 3rem 0;
+  position: relative;
+  animation: fadeIn 1.5s ease-out;
+}
+
+.testimonial-text {
+  font-style: italic;
+  margin-bottom: 1rem;
+}
+
+.testimonial-author {
+  color: #C9D6DF;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-label {
+  display: block;
+  color: #52616B;
+  margin-bottom: 0.5rem;
+}
+
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #C9D6DF;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #52616B;
+  box-shadow: 0 0 0 3px rgba(82, 97, 107, 0.1);
+}
+
+.submit-button {
+  width: 100%;
+  padding: 1rem;
+  background: #52616B;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.submit-button:hover {
+  background: #1E2022;
+  transform: translateY(-2px);
+}
+
+.register-link {
+  text-align: center;
+  margin-top: 1rem;
+  color: #52616B;
+}
+
+.register-link a {
+  color: #1E2022;
+  text-decoration: none;
+  font-weight: 600;
+  margin-left: 0.5rem;
+  transition: color 0.3s ease;
+}
+
+.register-link a:hover {
+  color: #52616B;
+}
+
+.error-message {
+  background: #fee2e2;
+  border: 1px solid #ef4444;
+  color: #dc2626;
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-10px); }
+  75% { transform: translateX(10px); }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translateX(-100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    transform: translateY(50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .login-page {
+    flex-direction: column;
+  }
+  
+  .login-content {
+    max-width: 100%;
+    padding: 1rem;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+}

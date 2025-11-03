@@ -1,0 +1,180 @@
+.quizzes-page {
+  background: #F0F5F9;
+  min-height: 100vh;  
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center; /* Center the panel horizontally */
+}
+
+.quizzes-container {
+  width: 1000px;
+  max-width: 700px; /* centered column width for vertical list of cards */
+  margin: 0 auto;
+  background: white; /* Match the panel background */
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(82, 97, 107, 0.08);
+  padding: 2rem;
+  min-height: calc(100vh - 4rem); /* Make it tall and fill vertical space */
+}
+
+.quizzes-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.quizzes-header h1 {
+  color: #1E2022;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.quizzes-section {
+  margin-bottom: 2rem;
+}
+
+.quizzes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);  /* 3 cards per row */
+  grid-template-rows: repeat(2, auto);    /* 2 rows only */
+  gap: 1.5rem;                            /* Space between cards */
+  justify-items: center;                  /* Center each card */
+  align-items: start;                     /* Align cards to top */
+  width: 100%;
+  max-width: 1100px;                      /* Wide enough for 3 cards */
+  margin: 0 auto;                         /* Center the grid */
+  padding: 0 1rem;                        /* Optional: side padding */
+}
+
+.quiz-tile,
+.quiz-card {
+  /* Clean white card style shared by .quiz-tile (existing JSX) and .quiz-card (new alias) */
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 1.5rem;
+  border: 1px solid rgba(201,214,223,0.6);
+  box-shadow: 0 6px 16px rgba(82,97,107,0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.quiz-tile:hover,
+.quiz-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(82,97,107,0.10);
+}
+
+.quiz-title {
+  color: #1E2022;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  font-size: 1.25rem; /* Larger title for wider space */
+  text-align: center;
+}
+
+.quiz-meta {
+  color: #52616B;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.quiz-action {
+  margin-top: 1rem;
+}
+
+.start-quiz-btn,
+.btn-primary {
+  display: inline-block;
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: #2d2d2d; /* dark gray */
+  color: #ffffff;
+  border-radius: 12px;
+  border: none;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.18s ease, transform 0.12s ease, box-shadow 0.12s ease;
+  font-size: 1rem;
+}
+
+.start-quiz-btn:hover,
+.btn-primary:hover {
+  background: #1e1e1e;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+}
+
+.badge-completed {
+  display: inline-block;
+  padding: 0.3rem 0.6rem;
+  background: rgba(82,161,82,0.12);
+  color: #2f855a;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+.no-quizzes {
+  text-align: center;
+  color: #52616B;
+  padding: 3rem;
+  background: #F0F5F9;
+  border-radius: 10px;
+  border: 1px solid rgba(201,214,223,0.6);
+}
+
+/* section headings */
+.section-title {
+  color: #52616B;
+  font-weight: 600;
+  margin-bottom: 0.75rem;
+  font-size: 1.1rem;
+}
+
+/* animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0);} 
+}
+
+.quiz-tile { animation: fadeInUp .45s ease both; }
+
+/* Submit button specific (for the floating one in your screenshot) */
+.submit-quiz-fixed {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  background: #52616B;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+/* responsive tweaks */
+@media (max-width: 768px) {
+  .quizzes-container {
+    max-width: 100%;
+    padding: 1.5rem;
+    border-radius: 0;
+    min-height: 100vh;
+  }
+
+  @media (max-width: 992px) {
+  .quizzes-grid {
+    grid-template-columns: 1fr;           /* 1 card per row on mobile */
+    grid-template-rows: none;             /* Let it auto-flow */
+  }
+}
+  
+  .quiz-tile { 
+    padding: 1.25rem; 
+  }
+  
+  .quizzes-page { 
+    padding: 1rem 0; 
+  }
+}
