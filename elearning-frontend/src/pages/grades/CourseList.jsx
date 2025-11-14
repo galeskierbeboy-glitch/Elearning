@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 
+
 export default function CourseList() {
   const navigate = useNavigate();
   const [courses, setCourses] = useState([]);

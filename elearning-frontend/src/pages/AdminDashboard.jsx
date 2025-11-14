@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { userService } from '../services/api';
 import { useAuth } from '../contexts/AuthContext';
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
@@ -247,7 +248,7 @@ const AdminDashboard = () => {
                               <button onClick={() => handleReject(r.request_id)} className="px-3 py-1 bg-red-600 text-white rounded">Reject</button>
                             </div>
                           ) : (
-                            <span className="text-sm text-gray-600">Processed</span>
+                            <span className="text-sm text-indigo-600">Processed</span>
                           )}
                         </td>
                       </tr>

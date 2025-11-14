@@ -178,20 +178,7 @@ const SecurityDashboard = () => {
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold">Security Dashboard</h2>
-              <div className="space-x-4">
-                <button
-                  onClick={() => setShowNotificationModal(true)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                  Send Notification
-                </button>
-                <button
-                  onClick={() => setShowReportModal(true)}
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                >
-                  Report Incident
-                </button>
-              </div>
+              
             </div>
           </div>
 
@@ -274,6 +261,20 @@ const SecurityDashboard = () => {
               </table>
             </div>
           </div>
+          <div className="space-x-4">
+                <button
+                  onClick={() => setShowNotificationModal(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Send Notification
+                </button>
+                <button
+                  onClick={() => setShowReportModal(true)}
+                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                >
+                  Report Incident
+                </button>
+              </div>
         </div>
       </div>
 

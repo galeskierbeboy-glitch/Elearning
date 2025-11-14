@@ -1,0 +1,190 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+/* PAGE LAYOUT */
+.main-content {
+  background-color: #4b5b65; /* Same as courses-page background */
+  min-height: 100vh;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+  color: #1e293b;
+  padding: 2rem;
+  overflow-x: auto;
+}
+
+/* HEADINGS */
+.main-content h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #f8fafc;
+  margin-bottom: 2rem;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+.main-content h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #e2e8f0;
+  margin-bottom: 1rem;
+}
+
+/* ERROR MESSAGE BOX */
+.bg-red-100 {
+  background-color: #fee2e2;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  color: #991b1b;
+  font-weight: 500;
+}
+
+/* TABLE CONTAINER */
+.bg-white {
+  background: #f8fafc;
+  border-radius: 20px;
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.15),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.8),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* TABLE BASE */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  color: #1e293b;
+}
+
+th {
+  background-color: #e2e8f0;
+  color: #1e3a8a;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 1rem;
+}
+
+td {
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: #334155;
+  border-top: 1px solid #e2e8f0;
+}
+
+tr:hover td {
+  background-color: #edf2f7;
+
+}
+
+/* SELECT DROPDOWN */
+select {
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0.4rem 0.6rem;
+  font-size: 0.9rem;
+  color: #1e293b;
+  transition: all 0.2s ease-in-out;
+}
+
+select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* BUTTON STYLES */
+button {
+  font-weight: 300;
+  height: 20px;
+  transition: all 0.3s ease;
+}
+
+/* Approve */
+.bg-green-600 {
+  background: linear-gradient(145deg, #22c55e, #16a34a);
+  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.3);
+}
+.bg-green-600:hover {
+  background: linear-gradient(145deg, #16a34a, #15803d);
+}
+
+/* Reject / Ban */
+.bg-red-600 {
+  background: linear-gradient(145deg, #dc2626, #b91c1c);
+  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.3);
+}
+.bg-red-600:hover {
+  background: linear-gradient(145deg, #b91c1c, #991b1b);
+}
+
+/* Copy / Close Button */
+.bg-indigo-600 {
+  background: linear-gradient(145deg, #3b82f6, #2563eb);
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
+}
+.bg-indigo-600:hover {
+  background: linear-gradient(145deg, #2563eb, #1d4ed8);
+}
+
+.bg-gray-600 {
+  background: #475569;
+}
+.bg-gray-600:hover {
+  background: #334155;
+}
+
+/* Token Modal */
+.fixed {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+}
+
+.bg-white.rounded-lg {
+  background-color: #f8fafc;
+  border-radius: 16px;
+  box-shadow:
+    0 10px 25px rgba(0, 0, 0, 0.15),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.8);
+}
+
+/* INPUT (Modal) */
+input[type="text"] {
+  background-color: #f1f5f9;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  color: #1e293b;
+}
+input[type="text"]:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 900px) {
+  .main-content {
+    padding: 1rem;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    padding: 0.6rem;
+  }
+
+  select {
+    width: 100%;
+  }
+
+  button {
+    padding: 0.5rem 0.8rem;
+  }
+}

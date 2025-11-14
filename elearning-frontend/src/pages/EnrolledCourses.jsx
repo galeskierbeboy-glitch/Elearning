@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import api, { courseService } from '../services/api';
+import './EnrolledCourses.css';
 
 const EnrolledCourses = () => {
   const [courses, setCourses] = useState([]);
@@ -70,7 +71,6 @@ const EnrolledCourses = () => {
                 key={cid}
                 className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
               >
-                <Navbar />
                 <h2 className="text-xl font-semibold mb-2">{course.title}</h2>
                 <p className="text-gray-600 mb-4">{course.description}</p>
                 <p className="text-sm text-gray-500 mb-4">

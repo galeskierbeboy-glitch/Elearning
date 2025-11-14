@@ -1,0 +1,42 @@
+.instructor-dashboard {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: #f0f5f9;
+}
+
+.redirect-message {
+  text-align: center;
+  color: #1e2022;
+  background: white;
+  padding: 2rem 3rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.redirect-message h1 {
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+}
+
+.redirect-message p {
+  color: #52616b;
+  margin-bottom: 1.5rem;
+}
+
+.loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 5px solid #d9d9d9;
+  border-top-color: #1e2022;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

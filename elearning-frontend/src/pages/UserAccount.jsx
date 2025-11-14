@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import { useAuth } from '../contexts/AuthContext';
-import { userService, authService } from '../services/api';
+import { userService } from '../services/api';
 import './UserAccount.css';
 
 const UserAccount = () => {
-  const { user, logout, refreshProfile, setUserState } = useAuth();
+  const { user, refreshProfile, setUserState } = useAuth();
   const [token, setToken] = useState('');
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState('');
@@ -27,26 +27,19 @@ const UserAccount = () => {
       setMessage(`Success! Server response: ${res.data.message || 'Role updated'}`);
 
       if (res.data && res.data.user) {
-        // If server returned user, store token (if any) and immediately update auth context
         try {
           if (res.data.token) {
             localStorage.setItem('token', res.data.token);
           }
-
           if (setUserState) {
-            // server returns fields named user_id/full_name etc. setUserState will normalize
             setUserState(res.data.user);
           }
-
-          // Also call refreshProfile to ensure server and client are fully synced
           if (refreshProfile) await refreshProfile();
         } catch (err) {
           console.error('Failed to update auth after applying token', err);
-          // As a last resort reload the page
           window.location.reload();
         }
       } else {
-        // fallback: refresh profile
         if (refreshProfile) {
           await refreshProfile();
         } else {
@@ -62,108 +55,151 @@ const UserAccount = () => {
     }
   };
 
-  // Ensure we fetch the authoritative profile when this page mounts
   useEffect(() => {
     if (refreshProfile) {
-      // fire-and-forget; refreshProfile updates localStorage and context
       refreshProfile().catch((err) => console.error('Auto refreshProfile failed', err));
     }
-  }, []);
+  }, [refreshProfile]);
 
   return (
-    <div className="user-account-container flex">
+    <div className="account-container">
       <Navbar />
-      <div className="main-content max-w-3xl mx-auto p-6">
-        <h2 className="text-2xl font-semibold mb-4">My Account</h2>
-        <div className="bg-white rounded shadow p-4 mb-4">
-          <p><strong>Name:</strong> {user?.full_name ?? user?.name}</p>
-          <p><strong>Email:</strong> {user?.email}</p>
-          <p><strong>Role:</strong> {user?.role || '(no role set)'} </p>
+
+      <div className="account-main-content">
+        <h2 className="account-header-title">My Account</h2>
+
+        {/* PROFILE CARD */}
+        <div className="account-profile-card">
+          <div className="account-avatar">
+            {user?.full_name?.[0]?.toUpperCase() || user?.name?.[0]?.toUpperCase() || 'U'}
+          </div>
+          <div className="account-info">
+            <p><strong>Name:</strong> {user?.full_name ?? user?.name}</p>
+            <p><strong>Email:</strong> {user?.email}</p>
+            <p><strong>Role:</strong> {user?.role || '(no role set)'}</p>
+          </div>
         </div>
 
-        <div className="bg-white rounded shadow p-4 mb-4">
-          <h3 className="text-lg font-medium mb-2">Change password</h3>
-          <p className="text-sm text-gray-600 mb-3">Change your password if you suspect unauthorized access. New password must be at least 8 characters.</p>
-          {message && <div className="mb-2 text-sm text-red-600">{message}</div>}
-          <form onSubmit={async (e) => {
-            e.preventDefault();
-            setMessage('');
-            if (!pwCurrent || !pwNew || !pwConfirm) {
-              setMessage('Please fill all password fields');
-              return;
-            }
-            if (pwNew.length < 8) {
-              setMessage('New password must be at least 8 characters');
-              return;
-            }
-            if (pwNew !== pwConfirm) {
-              setMessage('New password and confirmation do not match');
-              return;
-            }
-            try {
-              setPwLoading(true);
-              const res = await userService.changePassword({ currentPassword: pwCurrent, newPassword: pwNew });
-              const successMsg = res.data?.message || 'Password changed';
-              setMessage(successMsg);
-              // If token returned, update auth context and local storage
-              if (res.data?.token) {
-                localStorage.setItem('token', res.data.token);
-                if (setUserState) {
-                  // refresh profile to sync user object
-                  await refreshProfile();
-                } else {
-                  window.location.reload();
-                }
+        {/* CHANGE PASSWORD */}
+        <div className="account-card">
+          <h3 className="account-section-title">Change Password</h3>
+          <p className="account-description">
+            Change your password if you suspect unauthorized access. New password must be at least 8 characters.
+          </p>
+          {message && <div className="account-message">{message}</div>}
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              setMessage('');
+              if (!pwCurrent || !pwNew || !pwConfirm) {
+                setMessage('Please fill all password fields');
+                return;
               }
-              // clear fields
-              setPwCurrent(''); setPwNew(''); setPwConfirm('');
-            } catch (err) {
-              console.error('Change password failed', err);
-              const errMsg = err.response?.data?.message || err.message || 'Failed to change password';
-              setMessage(errMsg);
-            } finally {
-              setPwLoading(false);
-            }
-          }} className="space-y-2">
-            <input type="password" placeholder="Current password" value={pwCurrent} onChange={e => setPwCurrent(e.target.value)} className="w-full border rounded px-2 py-1" />
-            <input type="password" placeholder="New password" value={pwNew} onChange={e => setPwNew(e.target.value)} className="w-full border rounded px-2 py-1" />
-            <input type="password" placeholder="Confirm new password" value={pwConfirm} onChange={e => setPwConfirm(e.target.value)} className="w-full border rounded px-2 py-1" />
-            <div className="flex space-x-2">
-              <button type="submit" disabled={pwLoading} className="px-3 py-1 bg-indigo-600 text-white rounded">{pwLoading ? 'Changing...' : 'Change password'}</button>
+              if (pwNew.length < 8) {
+                setMessage('New password must be at least 8 characters');
+                return;
+              }
+              if (pwNew !== pwConfirm) {
+                setMessage('New password and confirmation do not match');
+                return;
+              }
+              try {
+                setPwLoading(true);
+                const res = await userService.changePassword({ currentPassword: pwCurrent, newPassword: pwNew });
+                const successMsg = res.data?.message || 'Password changed';
+                setMessage(successMsg);
+                if (res.data?.token) {
+                  localStorage.setItem('token', res.data.token);
+                  if (setUserState) await refreshProfile();
+                  else window.location.reload();
+                }
+                setPwCurrent(''); setPwNew(''); setPwConfirm('');
+              } catch (err) {
+                console.error('Change password failed', err);
+                const errMsg = err.response?.data?.message || err.message || 'Failed to change password';
+                setMessage(errMsg);
+              } finally {
+                setPwLoading(false);
+              }
+            }}
+            className="account-form"
+          >
+            <input
+              type="password"
+              placeholder="Current password"
+              value={pwCurrent}
+              onChange={(e) => setPwCurrent(e.target.value)}
+              className="account-input"
+            />
+            <input
+              type="password"
+              placeholder="New password"
+              value={pwNew}
+              onChange={(e) => setPwNew(e.target.value)}
+              className="account-input"
+            />
+            <input
+              type="password"
+              placeholder="Confirm new password"
+              value={pwConfirm}
+              onChange={(e) => setPwConfirm(e.target.value)}
+              className="account-input"
+            />
+            <div className="account-btn-group">
+              <button type="submit" disabled={pwLoading} className="account-btn account-btn-primary">
+                {pwLoading ? 'Changing...' : 'Change Password'}
+              </button>
             </div>
           </form>
         </div>
 
-        <div className="bg-white rounded shadow p-4">
+        {/* INVITE TOKEN */}
+        <div className="account-card">
           {user?.role === 'student' || user?.role === 'instructor' ? (
             <>
-              <h3 className="text-lg font-medium mb-2">Enter invite token</h3>
-              <p className="text-sm text-gray-600 mb-3">Paste the token you received from an admin to upgrade your account role.</p>
-              {message && <div className="mb-2 text-sm text-red-600">{message}</div>}
-              <form onSubmit={applyToken} className="flex space-x-2">
+              <h3 className="account-section-title">Enter Invite Token</h3>
+              <p className="account-description">
+                Paste the token you received from an admin to upgrade your account role.
+              </p>
+              {message && <div className="account-message">{message}</div>}
+              <form onSubmit={applyToken} className="account-form account-flex">
                 <input
                   type="text"
                   value={token}
                   onChange={(e) => setToken(e.target.value)}
                   placeholder="Paste invite token"
-                  className="flex-1 border rounded px-2 py-1"
+                  className="account-input account-flex-1"
                 />
-                <button type="submit" disabled={loading} className="px-3 py-1 bg-indigo-600 text-white rounded">{loading ? 'Applying...' : 'Apply Token'}</button>
+                <button type="submit" disabled={loading} className="account-btn account-btn-primary">
+                  {loading ? 'Applying...' : 'Apply Token'}
+                </button>
               </form>
             </>
           ) : (
             <div>
-              <h3 className="text-lg font-medium mb-2">Account status</h3>
-              <p className="text-sm text-gray-600">You already have role <strong>{user?.role}</strong>. No invite token is required.</p>
+              <h3 className="account-section-title">Account Status</h3>
+              <p className="account-description">
+                You already have role <strong>{user?.role}</strong>. No invite token is required.
+              </p>
             </div>
           )}
         </div>
 
-        <div className="bg-gray-100 rounded shadow p-4 mt-4">
-          <h4 className="font-medium mb-2">Debug</h4>
-          <p className="text-sm text-gray-600 mb-2">(Debug tools hidden) If your role changed in the database but the UI doesn't show it yet, click the button below to refresh your profile from the server.</p>
-          <div className="flex space-x-2">
-            <button onClick={async () => { if (refreshProfile) await refreshProfile(); }} className="px-3 py-1 bg-blue-600 text-white rounded">Force refresh profile</button>
+        {/* DEBUG CARD */}
+        <div className="account-debug-card">
+          <h4 className="account-debug-title">Debug</h4>
+          <p className="account-description">
+            (Debug tools hidden) If your role changed in the database but the UI doesn't show it yet, click the button below to refresh your profile from the server.
+          </p>
+          <div className="account-btn-group">
+            <button
+              onClick={async () => {
+                if (refreshProfile) await refreshProfile();
+              }}
+              className="account-btn account-btn-danger"
+            >
+              Force Refresh Profile
+            </button>
           </div>
         </div>
       </div>

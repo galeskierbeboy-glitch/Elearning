@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import './CourseDetail.css';
-
+import Navbar from '../../components/Navbar';
 // Course detail page: shows course info and lessons list
 // Route: /courses/:id
 
@@ -60,6 +60,7 @@ export default function CourseDetail() {
 
   return (
     <div className="course-detail-container">
+      <Navbar />
       <div className="course-header">
         <h1 className="course-title">{course.title}</h1>
         <p className="course-description">{course.description}</p>

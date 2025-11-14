@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './Navbar.css';
 
 const Navbar = () => {
   const { user, refreshProfile, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
-    // If we have a logged-in user but no role (empty string/null), try refreshing the profile
     if (user && (user.role === undefined || user.role === null || user.role === '')) {
       if (refreshProfile) {
         refreshProfile().catch((err) => console.error('Navbar refreshProfile failed', err));
@@ -25,66 +25,66 @@ const Navbar = () => {
     }
   };
 
+  const isActive = (path) => location.pathname === path;
+
   return (
     <div className="navbar">
       <div className="navbar-content">
+        
+        {/* LOGO */}
         <div className="navbar-header">
           <h2 className="navbar-title">E-Learning</h2>
         </div>
-        
-        <div className="nav-links">
-          <Link to="/dashboard" className="nav-link">
+
+        {/* NAV LINKS */}
+        <nav className="nav-links">
+          <Link to="/dashboard" className={`nav-link ${isActive('/dashboard') ? 'active' : ''}`}>
             <i className="fas fa-home nav-icon"></i>
             <span>Dashboard</span>
           </Link>
+
           {user && (
-            <Link to="/account" className="nav-link">
+            <Link to="/account" className={`nav-link ${isActive('/account') ? 'active' : ''}`}>
               <i className="fas fa-user nav-icon"></i>
               <span>{user.name || user.full_name || 'My Account'}</span>
             </Link>
           )}
-          {user?.role === 'instructor' && (
-            <Link to="/grades" className="nav-link">
-              <i className="fas fa-graduation-cap nav-icon"></i>
-              <span>Course List</span>
-            </Link>
-          )}
-          {user?.role === 'student' && (
-            <Link to="/grades" className="nav-link">
-              <i className="fas fa-graduation-cap nav-icon"></i>
-              <span>My Grades</span>
-            </Link>
-          )}
-          
-          {/* Student links */}
-          {user?.role === 'student' && (
-            <Link to="/enrolled-courses" className="nav-link">
-              <i className="fas fa-book nav-icon"></i>
-              <span>My Enrolled Courses</span>
-            </Link>
-          )}
-          
-          {/* Instructor links */}
-          {user?.role === 'instructor' && (
-            <Link to="/instructor/courses" className="nav-link">
-              <i className="fas fa-chalkboard-teacher nav-icon"></i>
-              <span>Manage My Courses</span>
-            </Link>
-          )}
-          
-          {/* Security Analyst links */}
 
-          {/* Admin links */}
-          {user?.role === 'admin' && (
-            <React.Fragment key="admin_links">
-              <Link to="/security-dashboard" className="nav-link">
-                <i className="fas fa-shield-alt nav-icon"></i>
-                <span>Security</span>
+          {user?.role === 'student' && (
+            <>
+              <Link to="/Grades" className={`nav-link ${isActive('/grades') ? 'active' : ''}`}>
+                <i className="fas fa-graduation-cap nav-icon"></i>
+                <span>My Grades</span>
               </Link>
-            </React.Fragment>
+              <Link to="/enrolled-courses" className={`nav-link ${isActive('/enrolled-courses') ? 'active' : ''}`}>
+                <i className="fas fa-book nav-icon"></i>
+                <span>My Enrolled Courses</span>
+              </Link>
+            </>
           )}
-        </div>
 
+          {user?.role === 'instructor' && (
+            <>
+              <Link to="/grades" className={`nav-link ${isActive('/grades') ? 'active' : ''}`}>
+                <i className="fas fa-list-alt nav-icon"></i>
+                <span>Course List</span>
+              </Link>
+              <Link to="/instructor/courses" className={`nav-link ${isActive('/instructor/courses') ? 'active' : ''}`}>
+                <i className="fas fa-chalkboard-teacher nav-icon"></i>
+                <span>Manage My Courses</span>
+              </Link>
+            </>
+          )}
+
+          {user?.role === 'admin' && (
+            <Link to="/security-dashboard" className={`nav-link ${isActive('/security-dashboard') ? 'active' : ''}`}>
+              <i className="fas fa-shield-alt nav-icon"></i>
+              <span>Security Dashboard</span>
+            </Link>
+          )}
+        </nav>
+
+        {/* LOGOUT */}
         <div className="navbar-footer">
           <button onClick={handleLogout} className="logout-button">
             <i className="fas fa-sign-out-alt nav-icon"></i>
