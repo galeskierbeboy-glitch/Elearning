@@ -10,6 +10,7 @@ import InstructorCourses from './pages/InstructorCourses';
 import SecurityDashboard from './pages/SecurityDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import UserAccount from './pages/UserAccount';
+import ForgotPass from './pages/ForgotPass';
 import Courses from './pages/courses/Courses';
 import CourseDetail from './pages/courses/CourseDetail';
 import Lessons from './pages/lessons/Lessons';
@@ -205,6 +206,7 @@ function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="/forgot-password" element={<ForgotPass />} />
         </Routes>
       </AuthProvider>
     </Router>

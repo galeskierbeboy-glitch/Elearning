@@ -54,7 +54,9 @@ export const createCourse = async (req, res) => {
 
 export const getAllCourses = async (req, res) => {
   try {
-    const [courses] = await pool.query(`
+    // Allow optional filtering by instructor_id query param
+    const instructorId = req.query.instructor_id ? Number(req.query.instructor_id) : null;
+    let coursesQuery = `
       SELECT 
         c.course_id,
         c.instructor_id,
@@ -64,11 +66,53 @@ export const getAllCourses = async (req, res) => {
         u.full_name as instructor_name 
       FROM courses c 
       JOIN users u ON c.instructor_id = u.user_id
-    `);
-    
+    `;
+
+    const params = [];
+    if (instructorId) {
+      coursesQuery += ` WHERE c.instructor_id = ?`;
+      params.push(instructorId);
+    }
+
+    const [courses] = await pool.query(coursesQuery, params);
     res.json(courses);
   } catch (error) {
     console.error(error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Return summary stats for an instructor: total courses and unique enrolled students
+export const getInstructorSummary = async (req, res) => {
+  try {
+    // allow param id or use authenticated user
+    const instructorId = req.params.id ? Number(req.params.id) : (req.user && (req.user.id ?? req.user.user_id));
+    if (!instructorId) return res.status(400).json({ message: 'Instructor id required' });
+
+    // Ensure requester is instructor or admin: allow admin to fetch any instructor
+    const requesterId = req.user && (req.user.id ?? req.user.user_id);
+    const requesterRole = req.user && req.user.role;
+    if (requesterRole !== 'admin' && requesterId !== instructorId) {
+      return res.status(403).json({ message: 'Access denied' });
+    }
+
+    // total courses by instructor
+    const [courses] = await pool.query('SELECT COUNT(*) AS total_courses FROM courses WHERE instructor_id = ?', [instructorId]);
+
+    // unique total students across those courses
+    const [students] = await pool.query(`
+      SELECT COUNT(DISTINCT e.student_id) AS total_students
+      FROM enrollments e
+      JOIN courses c ON e.course_id = c.course_id
+      WHERE c.instructor_id = ?
+    `, [instructorId]);
+
+    res.json({
+      totalCourses: courses[0]?.total_courses || 0,
+      totalStudents: students[0]?.total_students || 0
+    });
+  } catch (err) {
+    console.error('getInstructorSummary error:', err);
     res.status(500).json({ message: 'Server error' });
   }
 };

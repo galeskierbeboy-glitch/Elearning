@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../../services/api';
+import Navbar from '../../components/Navbar';
 
 // GradeManage: table with dynamic quiz columns, per-row dropdown and submit
 export default function GradeManage() {
@@ -86,6 +87,7 @@ export default function GradeManage() {
 
   return (
     <div>
+      <Navbar />
       <h2>Grade Management</h2>
       <table>
         <thead>

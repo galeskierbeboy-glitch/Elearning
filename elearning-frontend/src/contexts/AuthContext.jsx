@@ -21,7 +21,9 @@ export const AuthProvider = ({ children }) => {
       name: userData.full_name ?? userData.name,
       email: userData.email,
       role: userData.role,
-      created_at: userData.created_at
+      created_at: userData.created_at,
+      backup_code: userData.backup_code ?? null,
+      code_generation_timestamp: userData.code_generation_timestamp ?? null
     };
 
     if (normalizedUser.id !== undefined && normalizedUser.id !== null) {

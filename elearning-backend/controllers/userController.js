@@ -105,6 +105,17 @@ export const register = async (req, res) => {
       [name, email, hashedPassword, role]
     );
 
+    // Generate a 6-digit backup code for the new user and store timestamp
+    try {
+      const backupCode = crypto.randomInt(0, 1000000).toString().padStart(6, '0');
+      const now = new Date();
+      await pool.query('UPDATE users SET backup_code = ?, code_generation_timestamp = ? WHERE user_id = ?', [backupCode, now, result.insertId]);
+      // Audit the generation
+      await pool.query('INSERT INTO audit_logs (user_id, action) VALUES (?, ?)', [result.insertId, `Generated backup code at registration`]);
+    } catch (e) {
+      console.error('Failed to generate backup code on registration:', e);
+    }
+
     // If registration consumed a one-time invite request, mark it consumed
     if (typeof consumedInviteRequestId === 'number') {
       await pool.query(
@@ -209,7 +220,7 @@ export const getProfile = async (req, res) => {
     }
 
     const [users] = await pool.query(
-      'SELECT user_id, full_name, email, role, created_at FROM users WHERE user_id = ?',
+      'SELECT user_id, full_name, email, role, created_at, backup_code, code_generation_timestamp FROM users WHERE user_id = ?',
       [req.user.id]
     );
 
@@ -235,7 +246,9 @@ export const getProfile = async (req, res) => {
       name: users[0].full_name,
       email: users[0].email,
       role: users[0].role,
-      created_at: users[0].created_at
+      created_at: users[0].created_at,
+      backup_code: users[0].backup_code,
+      code_generation_timestamp: users[0].code_generation_timestamp
     });
   } catch (error) {
     console.error('Profile error:', error);
@@ -636,5 +649,109 @@ export const changePassword = async (req, res) => {
   } catch (error) {
     console.error('Change password error:', error);
     res.status(500).json({ message: 'Server error while changing password', details: error.message });
+  }
+};
+
+// Authenticated user: generate or refresh their 6-digit backup code
+export const generateBackupCode = async (req, res) => {
+  try {
+    const userId = req.user && req.user.id ? req.user.id : null;
+    if (!userId) return res.status(401).json({ message: 'Authentication required' });
+
+    const backupCode = crypto.randomInt(0, 1000000).toString().padStart(6, '0');
+    const now = new Date();
+
+    await pool.query('UPDATE users SET backup_code = ?, code_generation_timestamp = ? WHERE user_id = ?', [backupCode, now, userId]);
+    await pool.query('INSERT INTO audit_logs (user_id, action) VALUES (?, ?)', [userId, 'Regenerated backup code']);
+
+    res.json({ backup_code: backupCode, code_generation_timestamp: now });
+  } catch (error) {
+    console.error('generateBackupCode error:', error);
+    res.status(500).json({ message: 'Server error generating backup code' });
+  }
+};
+
+// Forgot-password: Step 1 - locate account by email
+export const forgotStart = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: 'Email required' });
+
+    const [rows] = await pool.query('SELECT user_id FROM users WHERE email = ? LIMIT 1', [email]);
+    const found = rows && rows.length > 0;
+
+    // Always return 200 to avoid leaking too much, but include a found flag so frontend can progress
+    return res.json({ found });
+  } catch (error) {
+    console.error('forgotStart error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// Forgot-password: Step 2 - verify backup code and issue a short-lived reset token
+export const forgotVerify = async (req, res) => {
+  try {
+    const { email, code } = req.body;
+    if (!email || !code) return res.status(400).json({ message: 'email and code are required' });
+
+    const [rows] = await pool.query('SELECT user_id, backup_code, code_generation_timestamp FROM users WHERE email = ? LIMIT 1', [email]);
+    if (!rows || rows.length === 0) return res.status(400).json({ message: 'Invalid email or code' });
+    const user = rows[0];
+
+    if (!user.backup_code || user.backup_code !== code) {
+      return res.status(400).json({ message: 'Invalid email or code' });
+    }
+
+    // Check code age (valid for 24 hours)
+    const genTs = user.code_generation_timestamp ? new Date(user.code_generation_timestamp).getTime() : 0;
+    if (!genTs || (Date.now() - genTs) > 24 * 60 * 60 * 1000) {
+      return res.status(400).json({ message: 'Backup code expired. Please generate a new code.' });
+    }
+
+    // Issue a short-lived reset token
+    const resetToken = jwt.sign({ id: user.user_id, purpose: 'pwd_reset' }, process.env.JWT_SECRET, { expiresIn: '15m' });
+
+    // Audit
+    await pool.query('INSERT INTO audit_logs (user_id, action) VALUES (?, ?)', [user.user_id, 'Completed backup code verification for password reset']);
+
+    res.json({ resetToken });
+  } catch (error) {
+    console.error('forgotVerify error:', error);
+    res.status(500).json({ message: 'Server error verifying code' });
+  }
+};
+
+// Forgot-password: Step 3 - reset password using the reset token
+export const forgotReset = async (req, res) => {
+  try {
+    const { resetToken, newPassword } = req.body;
+    if (!resetToken || !newPassword) return res.status(400).json({ message: 'resetToken and newPassword required' });
+    if (typeof newPassword !== 'string' || newPassword.length < 8) return res.status(400).json({ message: 'New password must be at least 8 characters' });
+
+    let payload;
+    try {
+      payload = jwt.verify(resetToken, process.env.JWT_SECRET);
+    } catch (e) {
+      return res.status(400).json({ message: 'Invalid or expired reset token' });
+    }
+
+    if (!payload || payload.purpose !== 'pwd_reset' || !payload.id) {
+      return res.status(400).json({ message: 'Invalid reset token' });
+    }
+
+    const userId = payload.id;
+
+    // Hash new password and update
+    const salt = await bcrypt.genSalt(10);
+    const newHash = await bcrypt.hash(newPassword, salt);
+
+    await pool.query('UPDATE users SET password_hash = ?, backup_code = NULL, code_generation_timestamp = NULL WHERE user_id = ?', [newHash, userId]);
+
+    await pool.query('INSERT INTO audit_logs (user_id, action) VALUES (?, ?)', [userId, 'Password reset via backup code flow']);
+
+    res.json({ message: 'Password reset successful' });
+  } catch (error) {
+    console.error('forgotReset error:', error);
+    res.status(500).json({ message: 'Server error resetting password' });
   }
 };

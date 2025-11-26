@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
-
+import Navbar from '../../components/Navbar';
 
 export default function CourseList() {
   const navigate = useNavigate();
@@ -51,6 +51,7 @@ export default function CourseList() {
 
   return (
     <div>
+      <Navbar />
       <h2>COURSE LIST</h2>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
         {courses.map(course => (

@@ -61,6 +61,8 @@ const UserAccount = () => {
     }
   }, [refreshProfile]);
 
+  const [generating, setGenerating] = useState(false);
+
   return (
     <div className="account-container">
       <Navbar />
@@ -77,6 +79,37 @@ const UserAccount = () => {
             <p><strong>Name:</strong> {user?.full_name ?? user?.name}</p>
             <p><strong>Email:</strong> {user?.email}</p>
             <p><strong>Role:</strong> {user?.role || '(no role set)'}</p>
+          </div>
+        </div>
+
+        {/* BACKUP CODE */}
+        <div className="account-card">
+          <h3 className="account-section-title">Backup Code</h3>
+          <p className="account-description">Use this 6-digit code to recover your account if you forget your password.</p>
+          <div className="backup-row">
+            <div className="backup-code-display">{user?.backup_code || '—'}</div>
+            <div className="backup-actions">
+              <button
+                onClick={async () => {
+                  try {
+                    setGenerating(true);
+                    const res = await userService.generateBackupCode();
+                    // refresh profile to pick up returned code
+                    if (refreshProfile) await refreshProfile();
+                    setMessage('Backup code generated');
+                  } catch (err) {
+                    console.error('Generate backup failed', err);
+                    setMessage(err.response?.data?.message || err.message || 'Failed to generate backup code');
+                  } finally {
+                    setGenerating(false);
+                  }
+                }}
+                className="account-btn account-btn-secondary"
+                disabled={generating}
+              >
+                {generating ? 'Generating...' : 'Generate New Backup Code'}
+              </button>
+            </div>
           </div>
         </div>
 

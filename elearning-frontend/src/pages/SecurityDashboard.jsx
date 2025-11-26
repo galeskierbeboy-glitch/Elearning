@@ -85,6 +85,58 @@ const SecurityDashboard = () => {
     }
   };
 
+  // Helper: convert array of objects to CSV and trigger download
+  const downloadCSV = (filename, items) => {
+    if (!items || items.length === 0) {
+      setError('No data available to download');
+      return;
+    }
+
+    const keys = Object.keys(items[0]);
+    const escape = (val) => {
+      if (val === null || val === undefined) return '';
+      const s = String(val).replace(/"/g, '""');
+      return `"${s}"`;
+    };
+
+    const header = keys.join(',');
+    const rows = items.map(row => keys.map(k => escape(row[k])).join(','));
+    const csv = [header, ...rows].join('\n');
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const handleDownloadIncidentsCSV = () => {
+    // sanitize and flatten incidents to simple key-values
+    const rows = incidents.map(i => ({
+      incident_id: i.incident_id,
+      description: i.description,
+      status: i.status,
+      reported_by: i.reported_by || i.reporter_name || '',
+      created_at: i.created_at
+    }));
+    downloadCSV('incidents.csv', rows);
+  };
+
+  const handleDownloadAuditLogsCSV = () => {
+    const rows = auditLogs.map(l => ({
+      log_id: l.log_id,
+      timestamp: l.timestamp,
+      user_id: l.user_id,
+      full_name: l.full_name || '',
+      action: l.action
+    }));
+    downloadCSV('audit_logs.csv', rows);
+  };
+
   // Developer helper: request a debug role upgrade from the backend debug route
   // This uses the `/users/debug/set-role` endpoint which is present in the backend
   // and intended for development/testing only. It will return a new token + user.
@@ -178,7 +230,32 @@ const SecurityDashboard = () => {
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-2xl font-bold">Security Dashboard</h2>
-              
+            </div>
+            <div className="flex gap-2">
+              <button
+                onClick={() => setShowNotificationModal(true)}
+                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+              >
+                Send Notification
+              </button>
+              <button
+                onClick={() => setShowReportModal(true)}
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+              >
+                Report Incident
+              </button>
+              <button
+                onClick={handleDownloadIncidentsCSV}
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              >
+                Download Incidents
+              </button>
+              <button
+                onClick={handleDownloadAuditLogsCSV}
+                className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
+              >
+                Download Audit Logs
+              </button>
             </div>
           </div>
 
@@ -193,7 +270,7 @@ const SecurityDashboard = () => {
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Reported By</th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date / Time</th>
                     {user?.role === 'security_analyst' && (
                       <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                     )}
@@ -214,7 +291,10 @@ const SecurityDashboard = () => {
                         </span>
                       </td>
                       <td className="px-6 py-4">{incident.reporter_name}</td>
-                      <td className="px-6 py-4">{new Date(incident.created_at).toLocaleDateString()}</td>
+                      <td className="px-6 py-4">
+                        {new Date(incident.created_at).toLocaleDateString()} {' '}
+                        <span className="text-sm text-gray-500">{new Date(incident.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                      </td>
                       {user?.role === 'security_analyst' && (
                         <td className="px-6 py-4">
                           <select
@@ -261,23 +341,8 @@ const SecurityDashboard = () => {
               </table>
             </div>
           </div>
-          <div className="space-x-4">
-                <button
-                  onClick={() => setShowNotificationModal(true)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
-                >
-                  Send Notification
-                </button>
-                <button
-                  onClick={() => setShowReportModal(true)}
-                  className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
-                >
-                  Report Incident
-                </button>
-              </div>
         </div>
       </div>
-
       {/* Report Incident Modal */}
       {showReportModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
@@ -321,14 +386,6 @@ const SecurityDashboard = () => {
             <div className="p-8">
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold">Send Notification</h2>
-                <button
-                  onClick={() => setShowNotificationModal(false)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-                  </svg>
-                </button>
               </div>
               <SendNotification onClose={() => setShowNotificationModal(false)} />
             </div>

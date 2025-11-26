@@ -214,6 +214,19 @@ export const userService = {
     return response;
   }
   ,
+  // Backup code management and forgot-password flow
+  generateBackupCode: async () => {
+    return api.post('/users/generate-backup');
+  },
+  forgotStart: async (email) => {
+    return api.post('/users/forgot/start', { email });
+  },
+  forgotVerify: async (email, code) => {
+    return api.post('/users/forgot/verify', { email, code });
+  },
+  forgotReset: async (resetToken, newPassword) => {
+    return api.post('/users/forgot/reset', { resetToken, newPassword });
+  },
   requestInvite: async (payload) => {
     return api.post('/users/invite-request', payload);
   }

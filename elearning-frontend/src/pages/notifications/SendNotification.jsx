@@ -214,7 +214,17 @@ export default function SendNotification({ onClose }) {
   // Render component
   return (
     <div className="send-notification-container">
-      <h1>Send Notification</h1>
+      <div className="send-notification-header">
+        <h1>Send Notification</h1>
+        <button
+          type="button"
+          aria-label="Close notification dialog"
+          className="close-btn"
+          onClick={() => onClose && onClose()}
+        >
+          ×
+        </button>
+      </div>
       
       {error && <div className="error-message">{error}</div>}
       {success && <div className="success-message">Notification sent successfully!</div>}

@@ -12,6 +12,48 @@ router.post('/register', auditLogger, register);
 router.post('/login', auditLogger, login);
 router.get('/profile', auth, auditLogger, getProfile);
 
+// Regenerate backup code for authenticated user
+router.post('/generate-backup', auth, auditLogger, async (req, res) => {
+  try {
+    const { generateBackupCode } = await import('../controllers/userController.js');
+    return generateBackupCode(req, res);
+  } catch (error) {
+    console.error('Generate backup route error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+// Forgot-password flow endpoints (public)
+router.post('/forgot/start', auditLogger, async (req, res) => {
+  try {
+    const { forgotStart } = await import('../controllers/userController.js');
+    return forgotStart(req, res);
+  } catch (error) {
+    console.error('Forgot start route error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.post('/forgot/verify', auditLogger, async (req, res) => {
+  try {
+    const { forgotVerify } = await import('../controllers/userController.js');
+    return forgotVerify(req, res);
+  } catch (error) {
+    console.error('Forgot verify route error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+router.post('/forgot/reset', auditLogger, async (req, res) => {
+  try {
+    const { forgotReset } = await import('../controllers/userController.js');
+    return forgotReset(req, res);
+  } catch (error) {
+    console.error('Forgot reset route error:', error);
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
 // View a user's profile by id. If not owner/admin, this will record an incident.
 // Constrain :id to digits only so that named routes like '/all' and
 // '/invite-requests' are not accidentally matched and cause 400 responses.
