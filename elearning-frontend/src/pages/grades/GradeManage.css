@@ -1,0 +1,202 @@
+/* GradeManage.css */
+.grade-manage-container {
+  background-color: #0a192f;
+  min-height: 100vh;
+  padding: 2rem;
+  color: #ccd6f6;
+}
+
+.grade-header {
+  color: #ccd6f6;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid #172a45;
+  position: relative;
+}
+
+.grade-header::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background-color: #64ffda;
+}
+
+.grade-table {
+  width: 100%;
+  background-color: #172a45;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid #8892b033;
+  margin-bottom: 2rem;
+}
+
+.grade-table thead {
+  background-color: #0f2847;
+}
+
+.grade-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #64ffda;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.grade-table td {
+  padding: 1rem;
+  color: #ccd6f6;
+  border-top: 1px solid #8892b033;
+}
+
+.grade-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.grade-table tbody tr:hover {
+  background-color: #0f2847;
+}
+
+.grade-table select {
+  background-color: #0a192f;
+  color: #ccd6f6;
+  border: 1px solid #8892b080;
+  padding: 0.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.grade-table select:focus {
+  outline: none;
+  border-color: #64ffda;
+  box-shadow: 0 0 0 2px rgba(100, 255, 218, 0.1);
+}
+
+.finalize-button {
+  background-color: #64ffda;
+  color: #0a192f;
+  border: none;
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 2rem;
+}
+
+.finalize-button:hover:not(:disabled) {
+  background-color: #52d9bc;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(100, 255, 218, 0.2);
+}
+
+.finalize-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.info-text {
+  color: #8892b0;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.loading-message,
+.error-message,
+.empty-message {
+  text-align: center;
+  padding: 2rem;
+  color: #8892b0;
+  font-size: 1.1rem;
+}
+
+.error-message {
+  color: #ff6b6b;
+}
+
+/* 响应式设计 */
+@media (max-width: 1200px) {
+  .grade-table {
+    font-size: 0.9rem;
+  }
+
+  .grade-table th,
+  .grade-table td {
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .grade-manage-container {
+    padding: 1rem;
+  }
+
+  .grade-header {
+    font-size: 1.5rem;
+  }
+
+  .grade-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .grade-table th,
+  .grade-table td {
+    padding: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grade-header {
+    font-size: 1.25rem;
+  }
+
+  .finalize-button {
+    width: 100%;
+  }
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.grade-table {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* 滚动条样式 */
+.grade-table::-webkit-scrollbar {
+  height: 8px;
+}
+
+.grade-table::-webkit-scrollbar-track {
+  background: #172a45;
+}
+
+.grade-table::-webkit-scrollbar-thumb {
+  background: #64ffda;
+  border-radius: 4px;
+}
+
+.grade-table::-webkit-scrollbar-thumb:hover {
+  background: #52d9bc;
+}

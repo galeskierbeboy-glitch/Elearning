@@ -7,7 +7,7 @@ import api from '../services/api';
 
 // REACT ICONS (Pinoy-approved!)
 import { MdWavingHand } from 'react-icons/md';
-import { FaPlus, FaBook, FaCheckCircle, FaChalkboardTeacher, FaBell } from 'react-icons/fa';
+import { FaPlus, FaBook, FaCheckCircle, FaChalkboardTeacher, FaBell, FaClipboardList } from 'react-icons/fa';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -53,13 +53,16 @@ export default function Dashboard() {
       <Navbar />
       <div className="dashboard-main">
         <header className="main-header">
-          <div className="header-actions">
-            {user?.role === 'student' && (
-              <Link to="/courses" className="enroll-button">
+          {user?.role === 'student' && (
+            <div className="header-buttons">
+              <Link to="/courses" className="enroll-buttoks">
                 <FaPlus /> Enroll in New Course
               </Link>
-            )}
-          </div>
+              <Link to="/quizzes" className="pending-quizzes-button">
+                <FaClipboardList /> Pending Quizzes
+              </Link>
+            </div>
+          )}
         </header>
 
         <main className="dashboard-content">
@@ -76,10 +79,10 @@ export default function Dashboard() {
             <section className="courses-section">
               <h2>Courses</h2>
               <div className="course-tabs">
-                <button className={activeTab === 'all' ? 'tab-active' : 'tab'} onClick={() => setActiveTab('all')}>
+                <button className={`tab ${activeTab === 'all' ? 'tab-active' : ''}`} onClick={() => setActiveTab('all')}>
                   All Courses
                 </button>
-                <button className={activeTab === 'newest' ? 'tab-active' : 'tab'} onClick={() => setActiveTab('newest')}>
+                <button className={`tab ${activeTab === 'newest' ? 'tab-active' : ''}`} onClick={() => setActiveTab('newest')}>
                   Newest
                 </button>
               </div>

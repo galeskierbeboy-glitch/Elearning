@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import api from '../../services/api';
 import { useAuth } from '../../contexts/AuthContext';
+import './CreateQuiz.css';
+import Navbar from '../../components/Navbar';
 
 export default function CreateQuiz() {
   const { courseId } = useParams();
@@ -193,6 +195,7 @@ export default function CreateQuiz() {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-4xl">
+      <Navbar />
       <form onSubmit={handleSubmit} className="space-y-8">
         <div className="bg-white rounded-lg shadow-sm p-6 border border-purple-200">
           <input

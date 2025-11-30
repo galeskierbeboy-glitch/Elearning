@@ -145,7 +145,7 @@ const AdminDashboard = () => {
   if (loading) return (
     <div className="flex">
       <Navbar />
-      <div className="main-content flex items-center justify-center">
+      <div className="main-contents flex items-center justify-center">
         <div className="text-xl">Loading admin dashboard...</div>
       </div>
     </div>
@@ -154,7 +154,7 @@ const AdminDashboard = () => {
   return (
     <div className="flex">
       <Navbar />
-      <div className="main-content">
+      <div className="main-contents">
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h2 className="text-2xl font-bold mb-6">Admin Dashboard</h2>
           {error && (
@@ -163,7 +163,7 @@ const AdminDashboard = () => {
             </div>
           )}
 
-          <div className="bg-white rounded-lg shadow overflow-hidden">
+          <div className="table-container">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
@@ -179,14 +179,14 @@ const AdminDashboard = () => {
                   <tr key={u.user_id}>
                     <td className="px-6 py-4 whitespace-nowrap">{u.user_id}</td>
                     <td className="px-6 py-4">{u.full_name}</td>
-                    <td className="px-6 py-4">{u.email}</td>
-                    <td className="px-6 py-4">{u.role}</td>
+                    <td className="px-6 py-4 email-cell">{u.email}</td>
+                    <td className="px-6 py-4 role-cell">{u.role}</td>
                     <td className="px-6 py-4">
                       <div className="flex items-center space-x-2">
                         <select
                           value={u.role}
                           onChange={(e) => handleRoleChange(u.user_id, e.target.value)}
-                          disabled={updatingRoles[u.user_id]}
+                          disabled={updatingRoles[u.user_id] || u.role === 'admin'}
                           className={`mt-1 block w-48 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm ${
                             updatingRoles[u.user_id] 
                               ? 'bg-gray-100 border-gray-300 cursor-not-allowed'
@@ -200,11 +200,11 @@ const AdminDashboard = () => {
                         </select>
 
                         {/* Show Ban button only for non-admin roles */}
-                        {['student', 'instructor', 'security_analyst'].includes(u.role) && (
+                        {u.user_id !== user.user_id && u.role !== 'admin' && (
                           <button
                             onClick={() => handleBan(u.user_id)}
                             disabled={banning === u.user_id}
-                            className={`px-3 py-1 rounded text-white ${banning === u.user_id ? 'bg-red-400' : 'bg-red-600 hover:bg-red-700'}`}
+                            className={`btn btn-ban ${banning === u.user_id ? 'banning' : ''}`}
                           >
                             {banning === u.user_id ? 'Banning...' : 'Ban'}
                           </button>
@@ -221,7 +221,7 @@ const AdminDashboard = () => {
             {requestsLoading ? (
               <div>Loading requests...</div>
             ) : (
-              <div className="bg-white rounded-lg shadow overflow-hidden">
+              <div className="table-container">
                 <table className="min-w-full divide-y divide-gray-200">
                   <thead className="bg-gray-50">
                     <tr>
@@ -239,13 +239,13 @@ const AdminDashboard = () => {
                         <td className="px-6 py-4">{r.request_id}</td>
                         <td className="px-6 py-4">{r.name}</td>
                         <td className="px-6 py-4">{r.email}</td>
-                        <td className="px-6 py-4">{r.role}</td>
-                        <td className="px-6 py-4">{r.status}</td>
+                        <td className="px-6 py-4 role-cell">{r.role}</td>
+                        <td className="px-6 py-4 status-cell">{r.status}</td>
                         <td className="px-6 py-4">
                           {r.status === 'pending' ? (
                             <div className="flex space-x-2">
-                              <button onClick={() => handleApprove(r.request_id)} disabled={approving===r.request_id} className="px-3 py-1 bg-green-600 text-white rounded">{approving===r.request_id?'Approving...':'Approve'}</button>
-                              <button onClick={() => handleReject(r.request_id)} className="px-3 py-1 bg-red-600 text-white rounded">Reject</button>
+                              <button onClick={() => handleApprove(r.request_id)} disabled={approving===r.request_id} className="btn btn-approve">{approving===r.request_id?'Approving...':'Approve'}</button>
+                              <button onClick={() => handleReject(r.request_id)} className="btn btn-reject">Reject</button>
                             </div>
                           ) : (
                             <span className="text-sm text-indigo-600">Processed</span>
@@ -264,7 +264,7 @@ const AdminDashboard = () => {
       {/* Token Modal */}
       {tokenModal.show && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-lg p-6 max-w-md w-full">
+          <div className="modal-content">
             <h3 className="text-lg font-medium mb-4">Invite Token Generated</h3>
             <div className="mb-4">
               <label className="block text-sm font-medium text-gray-700">Token</label>
@@ -277,7 +277,7 @@ const AdminDashboard = () => {
                 />
                 <button
                   onClick={() => navigator.clipboard.writeText(tokenModal.token)}
-                  className="absolute inset-y-0 right-0 px-3 flex items-center bg-indigo-600 text-white rounded-r-md hover:bg-indigo-700"
+                  className="btn btn-copy"
                 >
                   Copy
                 </button>
@@ -292,7 +292,7 @@ const AdminDashboard = () => {
             <div className="mt-4 flex justify-end">
               <button
                 onClick={() => setTokenModal({ show: false, token: '', expires: '' })}
-                className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+                className="btn btn-close"
               >
                 Close
               </button>

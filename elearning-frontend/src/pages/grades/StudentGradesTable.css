@@ -1,0 +1,168 @@
+/* Grades.css */
+.grades-table-wrapper {
+  background-color: #0a192f;
+  min-height: 100vh;
+  color: #ccd6f6;
+  padding: 2rem;
+}
+
+.grades-table {
+  width: 100%;
+  max-width: 1200px;
+  margin: 2rem auto;
+  background-color: #172a45;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  border: 1px solid #8892b033;
+}
+
+.grades-table thead {
+  background-color: #0f2847;
+}
+
+.grades-table th {
+  padding: 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #64ffda;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 2px solid #8892b033;
+}
+
+.grades-table td {
+  padding: 1rem;
+  color: #ccd6f6;
+  border-bottom: 1px solid #8892b033;
+  font-size: 0.95rem;
+}
+
+.grades-table tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.grades-table tbody tr:hover {
+  background-color: #0f2847;
+}
+
+.grades-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.not-posted {
+  color: #8892b0;
+  font-style: italic;
+}
+
+.no-grades {
+  text-align: center;
+  color: #8892b0;
+  font-style: italic;
+  padding: 2rem !important;
+}
+
+.grades-loading,
+.grades-error {
+  text-align: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+}
+
+.grades-loading {
+  color: #8892b0;
+}
+
+.grades-error {
+  color: #ff6b6b;
+  background-color: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: 6px;
+  margin: 2rem auto;
+  max-width: 600px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .grades-table-wrapper {
+    padding: 1rem;
+  }
+
+  .grades-table {
+    font-size: 0.875rem;
+  }
+
+  .grades-table th,
+  .grades-table td {
+    padding: 0.75rem 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .grades-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .grades-table th,
+  .grades-table td {
+    padding: 0.5rem;
+  }
+}
+
+/* 滚动条样式 */
+.grades-table::-webkit-scrollbar {
+  height: 8px;
+}
+
+.grades-table::-webkit-scrollbar-track {
+  background: #172a45;
+}
+
+.grades-table::-webkit-scrollbar-thumb {
+  background: #64ffda;
+  border-radius: 4px;
+}
+
+.grades-table::-webkit-scrollbar-thumb:hover {
+  background: #52d9bc;
+}
+
+/* 动画效果 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.grades-table {
+  animation: fadeIn 0.5s ease forwards;
+}
+
+/* 表格行交替颜色 */
+.grades-table tbody tr:nth-child(even) {
+  background-color: rgba(15, 40, 71, 0.3);
+}
+
+.grades-table tbody tr:nth-child(even):hover {
+  background-color: #0f2847;
+}
+
+/* 分数高亮 */
+.grades-table td:nth-child(5) {
+  font-weight: 600;
+  color: #64ffda;
+}
+
+/* 日期格式化 */
+.grades-table td:last-child {
+  color: #8892b0;
+  font-size: 0.875rem;
+}

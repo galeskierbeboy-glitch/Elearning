@@ -1,8 +1,27 @@
+/* --- COLOR VARIABLES FOR DARK MODE --- */
+:root {
+  --primary-color: #0a192f;
+  --secondary-color: #172a45;
+  --accent-color: #64ffda;
+  --accent-dark: #52d9bc; 
+  --text-primary: #ccd6f6;
+  --text-secondary: #8892b0;
+  
+  /* Derived/Intermediate Colors */
+  --card-shadow: rgba(0, 0, 0, 0.5);
+  --page-gradient-start: #0a192f;
+  --page-gradient-end: #0b1a2f;
+}
+
+/* --- PAGE LAYOUT --- */
 .instructor-dashboard-page {
   min-height: 100vh;
-  width: 1000px;
-  background: linear-gradient(135deg, #f0f5f9 0%, #e2e8f0 100%);
+  /* KEPT ORIGINAL WIDTH AS REQUESTED */
+  width: 1000px; 
+  /* Dark Blue Gradient */
+  background: linear-gradient(135deg, var(--page-gradient-start) 0%, var(--page-gradient-end) 100%);
   border-radius: 50px;
+  margin: 0 auto; /* Added margin auto to center the fixed width element */
 }
 
 .dashboard-loading {
@@ -11,7 +30,7 @@
   align-items: center;
   min-height: 80vh;
   font-size: 1.2rem;
-  color: #52616b;
+  color: var(--text-secondary); 
 }
 
 .instructor-dashboard-container {
@@ -20,12 +39,14 @@
   border-radius: 50px;
 }
 
+/* --- HEADINGS --- */
 .dashboard-title {
   font-size: 2.5rem;
   font-weight: 800;
-  color: #1e2022;
+  color: var(--text-primary); 
   margin-bottom: 0.5rem;
-  background: linear-gradient(90deg, #4a90e2, #357abd);
+  /* Accent Color Gradient to Title */
+  background: linear-gradient(90deg, var(--accent-color), var(--accent-dark));
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -33,11 +54,11 @@
 
 .dashboard-subtitle {
   font-size: 1.1rem;
-  color: #52616b;
+  color: var(--text-secondary); 
   margin-bottom: 2rem;
 }
 
-/* STATS GRID */
+/* --- STATS GRID --- */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -46,10 +67,10 @@
 }
 
 .stat-card {
-  background: white;
+  background: var(--secondary-color); /* Dark Card/Modal Background */
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 4px 15px rgba(30, 32, 34, 0.1);
+  box-shadow: 0 4px 15px var(--card-shadow);
   display: flex;
   align-items: center;
   gap: 1.5rem;
@@ -58,25 +79,26 @@
 
 .stat-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(30, 32, 34, 0.15);
+  box-shadow: 0 8px 25px var(--card-shadow);
 }
 
 .stat-icon {
   width: 60px;
   height: 60px;
-  background: linear-gradient(135deg, #4a90e2, #357abd);
+  /* Accent Color Gradient for Icon Background */
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--primary-color); /* Dark text on bright accent */
   font-size: 1.8rem;
   flex-shrink: 0;
 }
 
 .stat-content h3 {
   font-size: 0.95rem;
-  color: #52616b;
+  color: var(--text-secondary); 
   margin: 0 0 0.5rem 0;
   font-weight: 600;
 }
@@ -84,22 +106,22 @@
 .stat-value {
   font-size: 2rem;
   font-weight: 800;
-  color: #1e2022;
+  color: var(--text-primary); 
   margin: 0;
 }
 
 .stat-link {
-  color: #4a90e2;
+  color: var(--accent-color); /* Accent color for links */
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
 }
 
 .stat-link:hover {
-  color: #357abd;
+  color: var(--accent-dark); 
 }
 
-/* RECENT COURSES */
+/* --- RECENT COURSES --- */
 .recent-courses-section {
   margin-bottom: 3rem;
 }
@@ -107,10 +129,10 @@
 .section-title {
   font-size: 1.8rem;
   font-weight: 800;
-  color: #1e2022;
+  color: var(--text-primary); 
   margin-bottom: 1.5rem;
   padding-bottom: 0.75rem;
-  border-bottom: 3px solid #4a90e2;
+  border-bottom: 3px solid var(--accent-color); /* Accent border */
   display: inline-block;
 }
 
@@ -121,35 +143,35 @@
 }
 
 .course-preview {
-  background: white;
+  background: var(--secondary-color); /* Dark Card Background */
   border-radius: 16px;
   padding: 1.5rem;
-  box-shadow: 0 4px 15px rgba(30, 32, 34, 0.1);
-  border-left: 4px solid #4a90e2;
+  box-shadow: 0 4px 15px var(--card-shadow);
+  border-left: 4px solid var(--accent-color); /* Accent border on the left */
   transition: all 0.3s ease;
 }
 
 .course-preview:hover {
   transform: translateY(-4px);
-  box-shadow: 0 8px 25px rgba(30, 32, 34, 0.15);
+  box-shadow: 0 8px 25px var(--card-shadow);
 }
 
 .course-name {
   font-size: 1.2rem;
   font-weight: 700;
-  color: #1e2022;
+  color: var(--text-primary); 
   margin: 0 0 0.5rem 0;
 }
 
 .course-desc {
   font-size: 0.9rem;
-  color: #52616b;
+  color: var(--text-secondary); 
   margin: 0 0 1rem 0;
   line-height: 1.5;
 }
 
 .course-link {
-  color: #4a90e2;
+  color: var(--accent-color); /* Accent color for links */
   text-decoration: none;
   font-weight: 600;
   transition: all 0.3s ease;
@@ -157,10 +179,10 @@
 }
 
 .course-link:hover {
-  color: #357abd;
+  color: var(--accent-dark); 
 }
 
-/* ACTION BUTTONS */
+/* --- ACTION BUTTONS --- */
 .action-buttons {
   display: flex;
   gap: 1rem;
@@ -182,28 +204,34 @@
 }
 
 .action-btn.primary {
-  background: linear-gradient(135deg, #4a90e2, #357abd);
-  color: white;
-  box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+  /* Accent Color Primary Button */
+  background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
+  color: var(--primary-color); /* Dark text on bright button */
+  box-shadow: 0 4px 15px rgba(100, 255, 218, 0.3);
 }
 
 .action-btn.primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 25px rgba(74, 144, 226, 0.4);
+  box-shadow: 0 6px 25px rgba(100, 255, 218, 0.4);
 }
 
 .action-btn.secondary {
-  background: white;
-  color: #4a90e2;
-  border: 2px solid #4a90e2;
+  /* Secondary Button: Dark background, Accent text/border */
+  background: var(--secondary-color); 
+  color: var(--accent-color); 
+  border: 2px solid var(--accent-color);
 }
 
 .action-btn.secondary:hover {
-  background: #f0f5f9;
+  background: rgba(100, 255, 218, 0.1); /* Subtle hover effect */
   transform: translateY(-2px);
 }
 
-/* RESPONSIVE */
+/* --- RESPONSIVE --- */
+/* Note: Since the container is fixed at 1000px, this media query won't apply to the main container, 
+   but it will still apply to content layout on smaller screens if the container is not the full width of the viewport. 
+   If you want the 1000px width to apply only on large screens, you'd need to change .instructor-dashboard-page's width to 100% 
+   and use a max-width, but I kept the original width as requested. */
 @media (max-width: 768px) {
   .instructor-dashboard-container {
     padding: 1rem;

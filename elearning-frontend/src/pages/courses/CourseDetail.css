@@ -1,204 +1,208 @@
-.course-detail-container {
-  background-color: #F0F5F9;
-  min-height: 100vh;
-  padding: 2rem;
-  width: 1000px;
+/* Define CSS Variables for the Color Palette */
+:root {
+  --primary-color: #0a192f; /* Dark Navy Background */
+  --secondary-color: #172a45; /* Card/Section Background */
+  --accent-color: #64ffda; /* Mint Green Highlight */
+  --text-color-primary: #ccd6f6; /* Light Text */
+  --text-color-secondary: #8892b0; /* Secondary/Description Text */
+  --border-radius: 8px;
+  --transition-speed: 0.3s;
 }
 
+/* Base Styles */
+.course-detail-container {
+  min-height: 100vh;
+  width: 1200px;
+  background-color: var(--primary-color);
+  color: var(--text-color-primary);
+  padding: 0 1rem 3rem; /* Add padding at the bottom */
+  font-family: 'Inter', sans-serif;
+  user-select: none; /* Prevent text selection/dragging */
+  resize: none; /* Explicitly prevent user resizing */
+}
+
+/* Loading and Error States */
+.loading-state,
+.error-state {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-size: 1.25rem;
+  color: var(--accent-color);
+}
+
+/* Course Header */
 .course-header {
-  background-color: white;
-  border-radius: 15px;
-  padding: 2rem;
-  margin-bottom: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  max-width: 1200px;
+  margin: 0 auto 2.5rem;
+  padding: 3rem 0 1rem;
 }
 
 .course-title {
-  color: #1E2022;
   font-size: 2.5rem;
+  color: var(--text-color-primary);
+  margin-bottom: 0.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
-  line-height: 1.2;
 }
 
 .course-description {
-  color: #52616B;
   font-size: 1.1rem;
-  line-height: 1.6;
-  margin-bottom: 2rem;
+  color: var(--text-color-secondary);
 }
 
+/* Content Grid for Lessons and Quizzes */
 .content-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Section Styling */
 .section {
-  background: white;
-  border-radius: 15px;
-  padding: 2rem;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  background-color: var(--secondary-color);
+  padding: 1.5rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .section-title {
-  color: #1E2022;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
+  font-size: 1.75rem;
+  color: var(--accent-color);
+  border-bottom: 2px solid rgba(100, 255, 218, 0.2);
   padding-bottom: 0.5rem;
-  border-bottom: 2px solid #F0F5F9;
+  margin-bottom: 1.5rem;
 }
 
-.lesson-list, .quiz-list {
-  display: flex;
-  flex-direction: column;
+/* Empty State */
+.empty-state {
+  color: var(--text-color-secondary);
+  font-style: italic;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Lesson and Quiz Cards */
+.lesson-list,
+.quiz-list {
+  display: grid;
   gap: 1rem;
 }
 
-.lesson-card {
-  background: #F0F5F9;
-  border: 1px solid #C9D6DF;
-  border-radius: 10px;
-  padding: 1.25rem;
-  transition: all 0.3s ease;
-}
-
-.lesson-card:hover {
-  border-color: #52616B;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(82, 97, 107, 0.1);
-}
-
-.lesson-title {
-  color: #52616B;
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  text-decoration: none;
-  display: block;
-}
-
-.lesson-title:hover {
-  color: #1E2022;
-}
-
-.lesson-description {
-  color: #52616B;
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
+.lesson-card,
 .quiz-card {
-  background: #F0F5F9;
-  border: 1px solid #C9D6DF;
-  border-radius: 10px;
-  padding: 1.25rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  transition: all 0.3s ease;
+  padding: 1rem;
+  background-color: var(--primary-color);
+  border-radius: var(--border-radius);
+  border-left: 5px solid var(--secondary-color);
+  transition: transform var(--transition-speed), border-left-color var(--transition-speed), box-shadow var(--transition-speed);
 }
 
-.quiz-card:hover {
-  border-color: #52616B;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(82, 97, 107, 0.1);
+.lesson-card:hover {
+  transform: translateY(-3px);
+  border-left-color: var(--accent-color);
+  box-shadow: 0 6px 15px rgba(100, 255, 218, 0.1);
+}
+
+.lesson-card .lesson-title {
+  color: var(--text-color-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  text-decoration: none;
+  flex-grow: 1;
+}
+
+.lesson-card .lesson-title:hover {
+  color: var(--accent-color);
+}
+
+.lesson-description {
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  margin-top: 0.25rem;
+}
+
+/* Quiz Card Specifics */
+.quiz-card {
+  background-color: var(--primary-color);
+  border-left-color: var(--secondary-color);
 }
 
 .quiz-info h3 {
-  color: #1E2022;
   font-size: 1.1rem;
-  font-weight: 500;
-  margin-bottom: 0.25rem;
+  color: var(--text-color-primary);
+  margin: 0;
 }
 
 .quiz-info p {
-  color: #52616B;
+  color: var(--text-color-secondary);
   font-size: 0.9rem;
+  margin: 0.25rem 0 0;
 }
 
+/* Buttons and Badges */
 .quiz-button {
-  padding: 0.75rem 1.5rem;
+  padding: 0.5rem 1rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 4px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color var(--transition-speed), color var(--transition-speed);
+  font-size: 0.95rem;
 }
 
 .take-quiz-button {
-  background-color: #52616B;
-  color: white;
+  background-color: var(--accent-color);
+  color: var(--primary-color); /* Dark text on light accent background */
 }
 
 .take-quiz-button:hover {
-  background-color: #1E2022;
+  background-color: rgba(100, 255, 218, 0.8);
 }
 
 .completed-badge {
-  background-color: #C9D6DF;
-  color: #52616B;
+  background-color: var(--secondary-color);
+  color: var(--accent-color);
+  border: 1px solid var(--accent-color);
   padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
+  border-radius: 4px;
+  font-size: 0.95rem;
   font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
 }
 
-.completed-badge::before {
-  content: "✓";
-}
-
-.loading-state, .error-state {
-  text-align: center;
-  padding: 3rem;
-  color: #52616B;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-  margin: 2rem auto;
-  max-width: 600px;
-}
-
-.error-state {
-  color: #e53e3e;
-  border: 1px solid #feb2b2;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
+/* Responsive Design for larger screens */
+@media (min-width: 768px) {
   .course-detail-container {
-    padding: 1rem;
+    padding: 0 2rem 4rem;
   }
-
-  .content-grid {
-    grid-template-columns: 1fr;
-  }
-
+  
   .course-header {
-    padding: 1.5rem;
+    padding-top: 5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .content-grid {
+    grid-template-columns: 1fr 1fr; /* Two columns for desktop/tablet */
+    gap: 3rem;
   }
 
   .course-title {
-    font-size: 2rem;
+    font-size: 3rem;
   }
 
-  .section {
-    padding: 1.5rem;
+  .lesson-card,
+  .quiz-card {
+    padding: 1.25rem;
   }
 }
 
-/* Empty State Styling */
-.empty-state {
-  color: #52616B;
-  text-align: center;
-  padding: 2rem;
-  background: #F0F5F9;
-  border-radius: 10px;
-  border: 1px dashed #C9D6DF;
+/* Small adjustments for lesson card content alignment */
+.lesson-card > a {
+  display: block; /* Allows link to contain description text */
+  text-decoration: none;
 }

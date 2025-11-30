@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import api from '../../services/api';
 import Navbar from '../../components/Navbar';
+import './CourseList.css';
 
 export default function CourseList() {
   const navigate = useNavigate();
@@ -17,7 +18,6 @@ export default function CourseList() {
       setLoading(true);
       setError(null);
       try {
-        // If user is an instructor, request courses filtered by instructor_id
         let url = '/courses';
         if (user && (user.role === 'instructor' || user.role === 'admin')) {
           const id = user.id || user.id === 0 ? user.id : undefined;
@@ -35,29 +35,32 @@ export default function CourseList() {
     load();
   }, [user]);
 
-  // Only instructors may view this page. Redirect others to dashboard.
   useEffect(() => {
     if (user && user.role && user.role !== 'instructor') {
-      // non-instructors should not access this page
-      // navigate away to dashboard
       navigate('/dashboard');
     }
   }, [user, navigate]);
 
-  if (loading) return <div>Loading courses…</div>;
-  if (error) return <div>{error}</div>;
-
-  if (!courses || courses.length === 0) return <div>No courses found.</div>;
+  if (loading) return <div className="loading-message">Loading courses…</div>;
+  if (error) return <div className="error-message">{error}</div>;
+  if (!courses || courses.length === 0) return <div className="no-courses-message">No courses found.</div>;
 
   return (
-    <div>
+    <div className="course-list-container">
       <Navbar />
-      <h2>COURSE LIST</h2>
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12 }}>
+      <h2 className="course-list-header">COURSE LIST</h2>
+      <div className="courses-grid">
         {courses.map(course => (
-          <div key={course.course_id || course.id} style={{ width: '22%', boxSizing: 'border-box' }}>
-            <h3>{course.title || course.name || 'Untitled Course'}</h3>
-            <button onClick={() => navigate(`/grade-manage/${course.course_id || course.id}`)}>MANAGE</button>
+          <div key={course.course_id || course.id} className="course-card">
+            <h3 className="course-title">
+              {course.title || course.name || 'Untitled Course'}
+            </h3>
+            <button 
+              className="manage-button"
+              onClick={() => navigate(`/grade-manage/${course.course_id || course.id}`)}
+            >
+              MANAGE
+            </button>
           </div>
         ))}
       </div>

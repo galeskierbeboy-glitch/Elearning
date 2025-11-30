@@ -4,27 +4,47 @@ import { useAuth } from '../contexts/AuthContext';
 import { userService } from '../services/api';
 import './UserAccount.css';
 
+// 消息提示组件
+const MessageToast = ({ message, type, onClose }) => {
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onClose();
+    }, 3000);
+
+    return () => clearTimeout(timer);
+  }, [onClose]);
+
+  return (
+    <div className={`message-toast ${type}`}>
+      {message}
+    </div>
+  );
+};
+
 const UserAccount = () => {
   const { user, refreshProfile, setUserState } = useAuth();
   const [token, setToken] = useState('');
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState({ text: '', type: '' });
   const [pwCurrent, setPwCurrent] = useState('');
   const [pwNew, setPwNew] = useState('');
   const [pwConfirm, setPwConfirm] = useState('');
   const [pwLoading, setPwLoading] = useState(false);
 
+  const showMessage = (text, type = 'success') => {
+    setMessage({ text, type });
+  };
+
   const applyToken = async (e) => {
     e.preventDefault();
-    setMessage('');
     if (!token) {
-      setMessage('Please paste the invite token');
+      showMessage('Please paste invite token', 'error');
       return;
     }
     try {
       setLoading(true);
       const res = await userService.applyInviteToken(token);
-      setMessage(`Success! Server response: ${res.data.message || 'Role updated'}`);
+      showMessage(`Success! Server response: ${res.data.message || 'Role updated'}`, 'success');
 
       if (res.data && res.data.user) {
         try {
@@ -49,7 +69,7 @@ const UserAccount = () => {
     } catch (err) {
       console.error('Apply token failed', err);
       const errMsg = err.response?.data?.message || err.message || 'Failed to apply token';
-      setMessage(errMsg);
+      showMessage(errMsg, 'error');
     } finally {
       setLoading(false);
     }
@@ -65,6 +85,13 @@ const UserAccount = () => {
 
   return (
     <div className="account-container">
+      {message.text && (
+        <MessageToast
+          message={message.text}
+          type={message.type}
+          onClose={() => setMessage({ text: '', type: '' })}
+        />
+      )}
       <Navbar />
 
       <div className="account-main-content">
@@ -94,12 +121,11 @@ const UserAccount = () => {
                   try {
                     setGenerating(true);
                     const res = await userService.generateBackupCode();
-                    // refresh profile to pick up returned code
                     if (refreshProfile) await refreshProfile();
-                    setMessage('Backup code generated');
+                    showMessage('Backup code generated', 'success');
                   } catch (err) {
                     console.error('Generate backup failed', err);
-                    setMessage(err.response?.data?.message || err.message || 'Failed to generate backup code');
+                    showMessage(err.response?.data?.message || err.message || 'Failed to generate backup code', 'error');
                   } finally {
                     setGenerating(false);
                   }
@@ -119,28 +145,26 @@ const UserAccount = () => {
           <p className="account-description">
             Change your password if you suspect unauthorized access. New password must be at least 8 characters.
           </p>
-          {message && <div className="account-message">{message}</div>}
           <form
             onSubmit={async (e) => {
               e.preventDefault();
-              setMessage('');
               if (!pwCurrent || !pwNew || !pwConfirm) {
-                setMessage('Please fill all password fields');
+                showMessage('Please fill all password fields', 'error');
                 return;
               }
               if (pwNew.length < 8) {
-                setMessage('New password must be at least 8 characters');
+                showMessage('New password must be at least 8 characters', 'error');
                 return;
               }
               if (pwNew !== pwConfirm) {
-                setMessage('New password and confirmation do not match');
+                showMessage('New password and confirmation do not match', 'error');
                 return;
               }
               try {
                 setPwLoading(true);
                 const res = await userService.changePassword({ currentPassword: pwCurrent, newPassword: pwNew });
                 const successMsg = res.data?.message || 'Password changed';
-                setMessage(successMsg);
+                showMessage(successMsg, 'success');
                 if (res.data?.token) {
                   localStorage.setItem('token', res.data.token);
                   if (setUserState) await refreshProfile();
@@ -150,7 +174,7 @@ const UserAccount = () => {
               } catch (err) {
                 console.error('Change password failed', err);
                 const errMsg = err.response?.data?.message || err.message || 'Failed to change password';
-                setMessage(errMsg);
+                showMessage(errMsg, 'error');
               } finally {
                 setPwLoading(false);
               }
@@ -192,9 +216,8 @@ const UserAccount = () => {
             <>
               <h3 className="account-section-title">Enter Invite Token</h3>
               <p className="account-description">
-                Paste the token you received from an admin to upgrade your account role.
+                Paste token you received from an admin to upgrade your account role.
               </p>
-              {message && <div className="account-message">{message}</div>}
               <form onSubmit={applyToken} className="account-form account-flex">
                 <input
                   type="text"
@@ -222,7 +245,7 @@ const UserAccount = () => {
         <div className="account-debug-card">
           <h4 className="account-debug-title">Debug</h4>
           <p className="account-description">
-            (Debug tools hidden) If your role changed in the database but the UI doesn't show it yet, click the button below to refresh your profile from the server.
+            (Debug tools hidden) If your role changed in database but UI doesn't show it yet, click the button below to refresh your profile from the server.
           </p>
           <div className="account-btn-group">
             <button

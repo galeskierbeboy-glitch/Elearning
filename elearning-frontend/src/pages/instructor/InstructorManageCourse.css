@@ -1,0 +1,346 @@
+.manage-course-container {
+  min-height: 100vh;
+  background: #0a192f;
+  padding-bottom: 2rem;
+}
+
+.main-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.page-header {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #ccd6f6;
+  margin-bottom: 2rem;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.section {
+  background: #172a45;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.section:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(100, 255, 218, 0.2);
+  border-color: rgba(100, 255, 218, 0.3);
+}
+
+.section-header {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #ccd6f6;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 3px solid #64ffda;
+}
+
+.content-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+}
+
+.content-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background: #0a192f;
+  border-radius: 8px;
+  border-left: 4px solid #64ffda;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.content-item:hover {
+  background: #0d1f36;
+  transform: translateX(4px);
+}
+
+.content-item span:first-child {
+  font-weight: 500;
+  color: #ccd6f6;
+  flex: 1;
+}
+
+.content-type {
+  font-size: 0.875rem;
+  color: #64ffda;
+  background: rgba(100, 255, 218, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-weight: 500;
+  border: 1px solid rgba(100, 255, 218, 0.3);
+}
+
+.form-container {
+  background: #0a192f;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-top: 1.5rem;
+  border: 1px solid rgba(100, 255, 218, 0.1);
+}
+
+.form-container .section-header {
+  font-size: 1.25rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 2px solid rgba(100, 255, 218, 0.3);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group.full-width {
+  grid-column: 1 / -1;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #64ffda;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  padding: 0.75rem;
+  border: 2px solid rgba(100, 255, 218, 0.2);
+  border-radius: 6px;
+  font-size: 1rem;
+  color: #ccd6f6;
+  background: #172a45;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: #64ffda;
+  box-shadow: 0 0 0 3px rgba(100, 255, 218, 0.1);
+}
+
+.form-input::placeholder,
+.form-textarea::placeholder {
+  color: #8892b0;
+}
+
+.form-textarea {
+  min-height: 120px;
+  max-height: 300px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.form-select {
+  cursor: pointer;
+}
+
+.form-select option {
+  background: #172a45;
+  color: #ccd6f6;
+}
+
+.file-input-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: block;
+  width: 100%;
+}
+
+.file-input {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+}
+
+.file-input-label {
+  display: block;
+  padding: 0.75rem;
+  border: 2px dashed rgba(100, 255, 218, 0.3);
+  border-radius: 6px;
+  text-align: center;
+  color: #8892b0;
+  background: #172a45;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, color 0.2s ease;
+}
+
+.file-input-label:hover {
+  border-color: #64ffda;
+  background: #0d1f36;
+  color: #64ffda;
+}
+
+.file-name {
+  margin-top: 0.5rem;
+  font-size: 0.875rem;
+  color: #64ffda;
+  font-weight: 500;
+}
+
+.button-group {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.submit-button,
+.create-button {
+  padding: 0.875rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0a192f;
+  background: #64ffda;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  box-shadow: 0 4px 6px rgba(100, 255, 218, 0.3);
+}
+
+.submit-button:hover,
+.create-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(100, 255, 218, 0.5);
+  background: #52e8c4;
+}
+
+.submit-button:active,
+.create-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(100, 255, 218, 0.3);
+}
+
+.loading-message,
+.error-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.loading-message {
+  color: #64ffda;
+  background: #0a192f;
+}
+
+.error-message {
+  color: #ff6b6b;
+  background: rgba(255, 107, 107, 0.1);
+  padding: 1.5rem;
+  border-radius: 8px;
+  border-left: 4px solid #ff6b6b;
+  max-width: 600px;
+  margin: 2rem auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1.5rem 1rem;
+  }
+
+  .page-header {
+    font-size: 2rem;
+  }
+
+  .section {
+    padding: 1.5rem;
+  }
+
+  .section-header {
+    font-size: 1.5rem;
+  }
+
+  .form-container {
+    padding: 1rem;
+  }
+
+  .submit-button,
+  .create-button {
+    width: 100%;
+  }
+}
+
+/* Animation for content loading */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.section {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.content-item {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a192f;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #64ffda;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #52e8c4;
+}

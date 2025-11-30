@@ -1,176 +1,282 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-/* PAGE LAYOUT */
-.main-content {
-  background-color: rgba(255, 255, 255, 0.15);
+/* --- COLOR PALETTE --- */
+:root {
+  --primary-color: #0a192f;
+  --secondary-color: #172a45;
+  --accent-color: #64ffda;
+  --text-primary: #ccd6f6;
+  --text-secondary: #8892b0;
+
+  --green-color: #38a169;
+  --red-color: #e53e3e;
+  --red-hover: #c53030;
+
+  --card-shadow: rgba(0, 0, 0, 0.4);
+  --table-header-bg: #0b223c;
+}
+
+/* --- PAGE LAYOUT --- */
+.main-contents {
+  background-color: var(--primary-color);
   backdrop-filter: blur(12px);
   min-height: 100vh;
-  width: 100%;
+  width: 1200px;
   font-family: 'Inter', sans-serif;
-  color: #1e293b;
-  padding: 2rem;
+  color: var(--text-primary); /* Default text color */
+  padding: 2rem 4rem;
+  max-width: 1600px;
+  margin: 0 auto;
   overflow-x: auto;
-  border-radius: 50px;
 }
 
-/* HEADINGS */
-.main-content h2 {
-  font-size: 2rem;
+/* --- HEADINGS --- */
+.main-contents h2 {
+  font-size: 2.5rem;
   font-weight: 800;
-  color: #f8fafc;
-  margin-bottom: 2rem;
+  color: var(--text-primary); /* Use primary text color */
+  margin-bottom: 2.5rem; /* Increased margin */
   text-align: center;
   letter-spacing: -0.5px;
+  position: relative;
+  padding-bottom: 1.5rem; /* Increased padding */
 }
 
-.main-content h3 {
-  font-size: 1.5rem;
+.main-contents h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px; /* Increased width */
+  height: 3px;
+  background-color: var(--accent-color);
+}
+
+.main-contents h3 {
+  font-size: 1.75rem; /* Increased font size */
   font-weight: 700;
-  color: #e2e8f0;
-  margin-bottom: 1rem;
+  color: var(--text-primary); /* Use primary text color */
+  margin-bottom: 1.5rem; /* Increased margin */
+  position: relative;
+  padding-bottom: 0.75rem; /* Increased padding */
 }
 
-/* ERROR MESSAGE BOX */
-.bg-red-100 {
-  background-color: #fee2e2;
+.main-contents h3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 50px; /* Increased width */
+  height: 2px;
+  background-color: var(--accent-color);
+}
+
+/* --- TABLE CONTAINER --- */
+.table-container {
+  background: var(--secondary-color);
   border-radius: 12px;
-  padding: 1rem 1.2rem;
-  color: #991b1b;
-  font-weight: 500;
+  box-shadow: 
+    0 8px 20px var(--card-shadow),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.1),
+    inset -2px -2px 5px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  margin-bottom: 2.5rem; /* Increased margin */
+  width: 100%;
 }
 
-/* TABLE CONTAINER */
-.bg-white {
-  background: #f8fafc;
-  border-radius: 20px;
-  box-shadow:
-    0 8px 20px rgba(0, 0, 0, 0.15),
-    inset 2px 2px 5px rgba(255, 255, 255, 0.8),
-    inset -2px -2px 5px rgba(0, 0, 0, 0.05);
-}
-
-/* TABLE BASE */
+/* --- TABLE STYLES --- */
 table {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
-  color: #1e293b;
+  text-align: left; /* Tailwind already does this, but good for override */
+  color: var(--text-primary);
 }
 
 th {
-  background-color: #e2e8f0;
-  color: #1e3a8a;
+  background-color: var(--table-header-bg);
+  color: var(--accent-color);
   text-transform: uppercase;
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.05em;
-  padding: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 2px solid var(--accent-color);
 }
 
 td {
-  padding: 1rem;
+  padding: 1rem 1.5rem;
   font-size: 0.95rem;
-  color: #334155;
-  border-top: 1px solid #e2e8f0;
+  color: var(--text-secondary);
+  border-bottom: 1px solid rgba(136, 146, 176, 0.2);
+}
+
+td.email-cell, td.role-cell, td.status-cell {
+  color: var(--text-primary);
+}
+
+tr:last-child td {
+  border-bottom: none;
 }
 
 tr:hover td {
-  background-color: #edf2f7;
-
+  background-color: rgba(136, 146, 176, 0.08);
 }
 
-/* SELECT DROPDOWN */
+/* --- SELECT DROPDOWN --- */
 select {
-  background-color: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 0.4rem 0.6rem;
+  background-color: var(--primary-color);
+  border: 1px solid var(--text-secondary);
+  border-radius: 6px;
+  padding: 0.5rem 1rem;
   font-size: 0.9rem;
-  color: #1e293b;
+  color: var(--text-primary);
   transition: all 0.2s ease-in-out;
+  cursor: pointer;
 }
 
-select:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+select:hover {
+  border-color: var(--accent-color);
 }
 
-/* BUTTON STYLES */
-button {
-  font-weight: 300;
+select:disabled {
+  background-color: #112240;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* --- GENERAL BUTTON STYLES --- */
+.btn {
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
   transition: all 0.3s ease;
-}
-
-/* Approve */
-.bg-green-600 {
-  background: linear-gradient(145deg, #22c55e, #16a34a);
-  box-shadow: 0 6px 16px rgba(34, 197, 94, 0.3);
-}
-.bg-green-600:hover {
-  background: linear-gradient(145deg, #16a34a, #15803d);
-}
-
-/* Reject / Ban */
-.bg-red-600 {
-  background: linear-gradient(145deg, #dc2626, #b91c1c);
-  box-shadow: 0 6px 16px rgba(220, 38, 38, 0.3);
-}
-.bg-red-600:hover {
-  background: linear-gradient(145deg, #b91c1c, #991b1b);
-}
-
-/* Copy / Close Button */
-.bg-indigo-600 {
-  background: linear-gradient(145deg, #3b82f6, #2563eb);
-  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.3);
-}
-.bg-indigo-600:hover {
-  background: linear-gradient(145deg, #2563eb, #1d4ed8);
-}
-
-.bg-gray-600 {
-  background: #475569;
-}
-.bg-gray-600:hover {
-  background: #334155;
-}
-
-/* Token Modal */
-.fixed {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.45);
-  backdrop-filter: blur(6px);
-}
-
-.bg-white.rounded-lg {
-  background-color: #f8fafc;
-  border-radius: 16px;
-  box-shadow:
-    0 10px 25px rgba(0, 0, 0, 0.15),
-    inset 2px 2px 5px rgba(255, 255, 255, 0.8);
-}
-
-/* INPUT (Modal) */
-input[type="text"] {
-  background-color: #f1f5f9;
-  border: 1px solid #cbd5e1;
-  border-radius: 10px;
-  padding: 0.6rem;
   font-size: 0.9rem;
-  color: #1e293b;
-}
-input[type="text"]:focus {
-  outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  text-align: center;
 }
 
-/* RESPONSIVE DESIGN */
+.btn-approve {
+  background-color: var(--green-color);
+  color: white;
+}
+.btn-approve:hover {
+  background-color: #2f855a;
+}
+
+.btn-reject, .btn-ban {
+  background-color: var(--red-color);
+  color: white;
+}
+.btn-reject:hover, .btn-ban:hover {
+  background-color: var(--red-hover);
+}
+
+.btn-ban.banning {
+  background-color: #f56565;
+  cursor: wait;
+}
+
+.btn-close {
+  background-color: var(--text-secondary);
+  color: var(--primary-color);
+}
+.btn-close:hover {
+  background-color: var(--text-primary);
+}
+
+/* --- TOKEN MODAL --- */
+.modal-content {
+  background-color: var(--secondary-color);
+  border-radius: 12px;
+  padding: 2rem;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 
+    0 10px 25px var(--card-shadow),
+    inset 2px 2px 5px rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--text-secondary);
+}
+
+.modal-content h3 {
+  color: var(--accent-color);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--text-secondary);
+}
+.modal-content h3::after {
+  display: none; /* Remove the underline from the base h3 style */
+}
+
+.modal-content input[type="text"] {
+  background-color: var(--primary-color);
+  border: 1px solid var(--text-secondary);
+  border-radius: 6px;
+  padding: 0.75rem;
+  font-size: 1rem;
+  color: var(--text-primary);
+  width: 100%;
+}
+
+.btn-copy {
+  position: absolute; 
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: var(--accent-color);
+  color: var(--primary-color);
+  border-radius: 0 6px 6px 0;
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 1200px) {
+  .main-contents {
+    padding: 2rem 3rem; /* Adjusted padding for medium screens */
+  }
+}
+
 @media (max-width: 900px) {
-  .main-content {
-    padding: 1rem;
+  .main-contents {
+    padding: 1.5rem 2rem; /* Adjusted padding for smaller screens */
+    width: 100%;
+  }
+
+  table {
+    font-size: 0.9rem;
+  }
+
+  th, td {
+    padding: 0.8rem 1rem;
+  }
+
+  select {
+    width: 100%;
+    min-width: auto;
+  }
+
+  button {
+    padding: 0.5rem 1rem;
+  }
+
+  .modal-content {
+    margin: 1rem;
+    padding: 2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .main-contents {
+    padding: 1rem; /* Further reduced padding for mobile */
+    width: 100%;
+  }
+
+  .main-contents h2 {
+    font-size: 2rem;
+  }
+
+  .main-contents h3 {
+    font-size: 1.5rem;
   }
 
   table {
@@ -178,14 +284,10 @@ input[type="text"]:focus {
   }
 
   th, td {
-    padding: 0.6rem;
-  }
-
-  select {
-    width: 100%;
+    padding: 0.75rem 0.5rem;
   }
 
   button {
-    padding: 0.5rem 0.8rem;
+    padding: 0.4rem 0.8rem;
   }
 }
