@@ -7,12 +7,15 @@ import {
   updateQuiz, 
   deleteQuiz,
   getCompletedQuizzes,
-  submitQuiz
+  submitQuiz,
+  debugQuiz
 } from '../../controllers/modules/quizzesController.js';
 
 const router = express.Router();
 
 // Student endpoints
+// Development helper: unauthenticated sample quiz
+router.get('/debug/sample', debugQuiz);
 router.get('/', auth, auditLogger, listQuizzes);
 router.get('/completed', auth, auditLogger, getCompletedQuizzes);
 router.get('/:id', auth, auditLogger, getQuiz);

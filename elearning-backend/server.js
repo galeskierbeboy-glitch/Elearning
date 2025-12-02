@@ -10,6 +10,7 @@ import moduleQuizzes from './routes/modules/quizzes.js';
 import moduleGrades from './routes/modules/grades.js';
 import moduleNotifications from './routes/modules/notifications.js';
 import securityRoutes from './routes/security.js';
+import debugRoutes from './routes/debug.js';
 import { getPool } from './config/db.js';
 
 dotenv.config();
@@ -39,6 +40,7 @@ app.use('/api/quizzes', moduleQuizzes);
 app.use('/api/grades', moduleGrades);
 app.use('/api/notifications', moduleNotifications);
 app.use('/api/security', securityRoutes);
+app.use('/api/debug', debugRoutes);
 app.use('/api/courses', moduleCourses); // Keep only the modular courses routes
 
 // Error handling middleware

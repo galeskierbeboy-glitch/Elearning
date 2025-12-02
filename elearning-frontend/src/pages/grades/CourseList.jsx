@@ -51,7 +51,7 @@ export default function CourseList() {
       <h2 className="course-list-header">COURSE LIST</h2>
       <div className="courses-grid">
         {courses.map(course => (
-          <div key={course.course_id || course.id} className="course-card">
+          <div key={course.course_id || course.id} className="course-cardo">
             <h3 className="course-title">
               {course.title || course.name || 'Untitled Course'}
             </h3>

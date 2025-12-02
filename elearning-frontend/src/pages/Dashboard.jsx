@@ -112,9 +112,6 @@ export default function Dashboard() {
                           <span className="lessons-count">
                             <FaBook /> {course.lessons_count || 0} Lessons
                           </span>
-                          <span className="completed-lessons">
-                            <FaCheckCircle /> {course.completed_lessons || 0} Done
-                          </span>
                         </div>
                         <div className="course-progress">
                           <div className="progress-bar">

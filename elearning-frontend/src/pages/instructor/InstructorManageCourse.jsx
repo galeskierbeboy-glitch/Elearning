@@ -200,16 +200,18 @@ export default function InstructorManageCourse() {
                 </div>
 
                 <div className="form-group full-width">
-                  <label className="form-label">Upload File (PDF or video)</label>
+                  <label className="form-label">Upload File (PDF, DOCX, PPTX, XLSX, TXT, ZIP)</label>
                   <div className="file-input-wrapper">
                     <input 
+                      id={`lesson-file-input`} 
                       type="file" 
-                      accept=".pdf,video/*" 
+                      accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.txt,.zip,.rtf" 
                       onChange={e => setLessonFile(e.target.files[0] || null)} 
                       className="file-input"
+                      aria-label="Choose file"
                     />
-                    <label className="file-input-label">
-                      Choose file or drag it here
+                    <label htmlFor={`lesson-file-input`} className="file-input-label">
+                      Choose file
                     </label>
                   </div>
                   {lessonFile && (

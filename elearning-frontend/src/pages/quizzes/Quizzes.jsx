@@ -34,15 +34,16 @@ export default function Quizzes() {
   };
 
   const isQuizCompleted = (quizId) => {
-    return completedQuizzes.includes(quizId);
+    return completedQuizzes.some(id => String(id) === String(quizId));
   };
 
   if (loading) return <div className="p-4">Loading quizzes...</div>;
   if (error) return <div className="p-4 text-red-600">{error}</div>;
 
   // Separate quizzes into completed and pending
-  const pendingQuizzes = quizzes.filter(quiz => !isQuizCompleted(quiz.quiz_id));
-  const doneQuizzes = quizzes.filter(quiz => isQuizCompleted(quiz.quiz_id));
+  const normalizeId = (quiz) => quiz.quiz_id ?? quiz.id ?? quiz._id ?? quiz.quizId;
+  const pendingQuizzes = quizzes.filter(quiz => !isQuizCompleted(normalizeId(quiz)));
+  const doneQuizzes = quizzes.filter(quiz => isQuizCompleted(normalizeId(quiz)));
 
   return (
     <div className="quizzes-page">
@@ -57,12 +58,12 @@ export default function Quizzes() {
             <h2 className="section-title">Pending Quizzes</h2>
             <div className="quizzes-grid">
               {pendingQuizzes.map(quiz => (
-                <div key={quiz.quiz_id} className="quiz-tile">
+                <div key={normalizeId(quiz)} className="quiz-tile">
                   <div>
                     <h3 className="quiz-title">{quiz.title}</h3>
                   </div>
                   <div className="quiz-action">
-                    <button onClick={() => navigate(`/quizzes/${quiz.quiz_id}`)} className="btn-primary">Start Quiz</button>
+                    <button onClick={() => navigate(`/quizzes/${normalizeId(quiz)}`)} className="btn-primary">Start Quiz</button>
                   </div>
                 </div>
               ))}
@@ -75,7 +76,7 @@ export default function Quizzes() {
             <h2 className="section-title">Completed Quizzes</h2>
             <div className="quizzes-grid">
               {doneQuizzes.map(quiz => (
-                <div key={quiz.quiz_id} className="quiz-tile">
+                <div key={normalizeId(quiz)} className="quiz-tile">
                   <div>
                     <h3 className="quiz-title">{quiz.title}</h3>
                   </div>

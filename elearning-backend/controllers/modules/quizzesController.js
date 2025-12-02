@@ -84,16 +84,48 @@ export const getQuiz = async (req, res) => {
       ORDER BY question_order
     `, [id]);
 
-    // Format the response
+    // Format the response with robust options parsing
+    const questions = questionRows.map(q => {
+      const raw = q.options;
+      let options = [];
+      try {
+        if (Array.isArray(raw)) {
+          options = raw;
+        } else if (typeof raw === 'string') {
+          // Try JSON parse first
+          try {
+            options = JSON.parse(raw || '[]');
+          } catch (parseErr) {
+            // Fallback splits for common delimiter formats
+            if (raw.includes('||')) options = raw.split('||').map(s => s.trim()).filter(Boolean);
+            else if (raw.includes('|')) options = raw.split('|').map(s => s.trim()).filter(Boolean);
+            else if (raw.includes(',')) options = raw.split(',').map(s => s.trim()).filter(Boolean);
+            else options = [raw];
+          }
+        } else if (raw == null) {
+          options = [];
+        } else {
+          // As a last resort, attempt to coerce to array
+          options = Array.isArray(raw) ? raw : [];
+        }
+      } catch (err) {
+        console.warn('getQuiz: failed to normalize options for question', q.question_id, err);
+        options = [];
+      }
+
+      return {
+        question: q.question_text,
+        options,
+        question_id: q.question_id
+      };
+    });
+
     const quiz = {
       ...quizRows[0],
-      questions: questionRows.map(q => ({
-        question: q.question_text,
-        options: JSON.parse(q.options || '[]'),
-        question_id: q.question_id
-      }))
+      questions
     };
 
+    console.debug('getQuiz: returning quiz', { quiz_id: quiz.quiz_id, questions_count: questions.length });
     res.json(quiz);
   } catch (error) {
     console.error('getQuiz error:', error);
@@ -101,6 +133,33 @@ export const getQuiz = async (req, res) => {
       message: 'Error fetching quiz',
       details: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
+  }
+};
+
+// Development-only: return a sample quiz without auth for quick frontend testing
+export const debugQuiz = async (req, res) => {
+  try {
+    const sample = {
+      quiz_id: 'sample-1',
+      title: 'Sample Quiz (dev only)',
+      course_id: null,
+      questions: [
+        {
+          question_id: 1,
+          question: 'What is 2 + 2?',
+          options: ['3', '4', '5', '22']
+        },
+        {
+          question_id: 2,
+          question: 'Which is a fruit?',
+          options: ['Carrot', 'Apple', 'Celery', 'Potato']
+        }
+      ]
+    };
+    res.json(sample);
+  } catch (err) {
+    console.error('debugQuiz error:', err);
+    res.status(500).json({ message: 'Debug quiz failed' });
   }
 };
 

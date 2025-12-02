@@ -2,6 +2,7 @@ import './App.css';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ProtectedRoute from './components/ProtectedRoute';
+import LandingPage from './pages/LandingPage';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -16,6 +17,7 @@ import CourseDetail from './pages/courses/CourseDetail';
 import Lessons from './pages/lessons/Lessons';
 import Quizzes from './pages/quizzes/Quizzes';
 import QuizRunner from './pages/quizzes/QuizRunner';
+import DebugQuiz from './pages/quizzes/DebugQuiz';
 import CourseList from './pages/grades/CourseList';
 import StudentGradesTable from './pages/grades/StudentGradesTable';
 import GradeManage from './pages/grades/GradeManage';
@@ -59,7 +61,7 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Navigate to="/dashboard" replace />} />
+          <Route path="/" element={<LandingPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
@@ -126,6 +128,8 @@ function App() {
               </ProtectedRoute>
             }
           />
+          {/* Public debug route for frontend QA (dev only) */}
+          <Route path="/quizzes/debug-sample" element={<DebugQuiz />} />
           <Route
             path="/grades"
             element={

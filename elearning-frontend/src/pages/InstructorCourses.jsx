@@ -100,7 +100,7 @@ const InstructorCourses = () => {
           {courses.map((course) => (
             <div 
               key={course.course_id ?? course.id} 
-              className="course-card"
+              className="course-cards"
             >
               <h2 className="course-title">{course.title}</h2>
               <p className="course-description">{course.description}</p>

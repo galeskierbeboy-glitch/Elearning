@@ -74,13 +74,13 @@
 }
 
 .notification-title {
-  color: #1E2022;
+  color: #ffffff;
   font-size: 1.25rem;
   margin: 0.5rem 0;
 }
 
 .notification-body {
-  color: #e6e6e6;
+  color: #b3b0b0;
   margin: 1rem 0;
   line-height: 1.5;
 }
