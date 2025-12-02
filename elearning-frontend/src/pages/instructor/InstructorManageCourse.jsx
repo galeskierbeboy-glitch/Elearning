@@ -200,7 +200,7 @@ export default function InstructorManageCourse() {
                 </div>
 
                 <div className="form-group full-width">
-                  <label className="form-label">Upload File (PDF, DOCX, PPTX, XLSX, TXT, ZIP)</label>
+                  <label className="form-label">Upload File (PDF)</label>
                   <div className="file-input-wrapper">
                     <input 
                       id={`lesson-file-input`} 

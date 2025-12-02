@@ -7,7 +7,7 @@ import api from '../services/api';
 
 // REACT ICONS (Pinoy-approved!)
 import { MdWavingHand } from 'react-icons/md';
-import { FaPlus, FaBook, FaCheckCircle, FaChalkboardTeacher, FaBell, FaClipboardList } from 'react-icons/fa';
+import { FaPlus, FaBook, FaCheckCircle, FaChalkboardTeacher, FaBell, FaClipboardList, FaDownload } from 'react-icons/fa';
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -45,6 +45,40 @@ export default function Dashboard() {
     if (user) fetchDashboardData();
   }, [user, activeTab]);
 
+  const downloadProgressReport = () => {
+    try {
+      // Prepare CSV data
+      const headers = ['Course Title', 'Instructor', 'Progress (%)', 'Lessons', 'Status'];
+      const rows = courses.map(course => [
+        course.title || 'N/A',
+        course.instructor_name || 'N/A',
+        course.progress || 0,
+        course.lessons_count || 0,
+        course.progress === 100 ? 'Completed' : 'In Progress'
+      ]);
+
+      // Create CSV content
+      const csvContent = [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+      ].join('\n');
+
+      // Create blob and download
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const link = document.createElement('a');
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `student-progress-${new Date().toISOString().slice(0, 10)}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    } catch (err) {
+      console.error('Failed to download progress report:', err);
+      alert('Failed to download progress report');
+    }
+  };
+
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">{error}</div>;
 
@@ -61,6 +95,9 @@ export default function Dashboard() {
               <Link to="/quizzes" className="pending-quizzes-button">
                 <FaClipboardList /> Pending Quizzes
               </Link>
+              <button onClick={downloadProgressReport} className="download-progress-button">
+                <FaDownload /> Download Progress
+              </button>
             </div>
           )}
         </header>
